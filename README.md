@@ -1,12 +1,12 @@
 # Matrixx-AI
 
-This repository documents my internship work at **Metrixx AI**, focusing on futures market data analysis, market structure research, and trading signal framework development for the MY DESK market intelligence platform.
+This repository documents a futures market intelligence research and development project for **Metrixx AI**, focusing on futures data analysis, market structure research, and trading signal framework development for the MY DESK market intelligence platform.
 
 ## Project Overview
 
-The project focuses on transforming raw futures, physical commodity, positioning, and intraday market-structure data into structured trading intelligence. The core work centers on data-driven futures analysis, basis sentiment interpretation, order-flow behavior, and market structure signal construction.
+The project focuses on transforming futures, physical commodity, positioning, and intraday market-structure data into structured trading intelligence. The core work centers on data-driven futures analysis, basis sentiment interpretation, order-flow behavior, and market structure signal construction.
 
-Rather than building generic AI prompts, this project emphasizes the analytical layer behind market intelligence generation: identifying useful trading signals, defining market structure logic, validating commodity data inputs, and converting futures-market observations into standardized outputs.
+Rather than building generic AI prompts, this project emphasizes the analytical layer behind market intelligence generation: identifying actionable trading signals, defining market structure logic, validating commodity data inputs, and converting futures-market observations into standardized intelligence outputs.
 
 ## Core Areas
 
@@ -35,7 +35,7 @@ These frameworks are designed to support concise market intelligence outputs ins
 
 ## Basis Sentiment Service
 
-Part of the project also involves supporting the **BASIS SENTIMENT SERVICE**, which combines physical commodity data, futures settlement prices, COT positioning, and commodity news context into structured market intelligence.
+Part of the project supports the **BASIS SENTIMENT SERVICE**, which combines physical commodity data, futures settlement prices, COT positioning, and commodity news context into structured market intelligence.
 
 Relevant data components include:
 
@@ -62,7 +62,7 @@ The project combines futures trading domain knowledge with structured data inter
 
 ## Planned Updates
 
-This repository will continue to be updated as the internship progresses. Future additions may include:
+This repository will continue to be updated as the project progresses. Future additions may include:
 
 - Additional futures market signal frameworks
 - Basis Sentiment Service documentation
@@ -74,4 +74,4 @@ This repository will continue to be updated as the internship progresses. Future
 
 ## Disclaimer
 
-This repository is for educational, research, and internship documentation purposes only. It does not constitute investment advice, trading advice, or a recommendation to buy or sell any financial instrument.
+This repository is for educational and research documentation purposes only. It does not constitute investment advice, trading advice, or a recommendation to buy or sell any financial instrument.
