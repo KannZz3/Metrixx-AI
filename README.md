@@ -91,9 +91,9 @@ These frameworks are designed to support concise market intelligence outputs ins
 ## Basis Sentiment Service  
 ## 基差情绪服务
 
-Part of the project supports the **BASIS SENTIMENT SERVICE**, which combines physical commodity data, futures settlement prices, COT positioning, and commodity news context into structured market intelligence.
+A selected component of this work supports the **BASIS SENTIMENT SERVICE**, which combines physical commodity data, futures settlement prices, COT positioning, and commodity news context into structured market intelligence.
 
-项目的一部分支持 **BASIS SENTIMENT SERVICE（基差情绪服务）**，该服务将现货商品数据、期货结算价、COT 持仓数据以及商品市场新闻背景整合为结构化市场情报。
+本仓库记录的部分工作支持 **BASIS SENTIMENT SERVICE（基差情绪服务）**，该服务将现货商品数据、期货结算价、COT 持仓数据以及商品市场新闻背景整合为结构化市场情报。
 
 Relevant data components include:
 
@@ -134,9 +134,9 @@ The objective is to support a production-style pipeline where normalized market 
 ## Methodology  
 ## 方法论
 
-The project combines futures trading domain knowledge with structured data interpretation. Key concepts include:
+This documented work combines futures trading domain knowledge with structured data interpretation. Key concepts include:
 
-本项目结合期货交易领域知识与结构化数据解读方法，核心概念包括：
+本仓库记录的工作结合期货交易领域知识与结构化数据解读方法，核心概念包括：
 
 - Price acceptance vs. rejection  
   价格接受与价格拒绝
@@ -167,9 +167,9 @@ The project combines futures trading domain knowledge with structured data inter
 ## Planned Updates  
 ## 后续计划
 
-This repository will continue to be updated as the project progresses. Future additions may include:
+This repository will continue to be updated as the documented work progresses. Future additions may include:
 
-本仓库将随着项目推进持续更新，后续可能加入以下内容：
+本仓库将随着相关工作推进持续更新，后续可能加入以下内容：
 
 - Additional futures market signal frameworks  
   更多期货市场信号框架
