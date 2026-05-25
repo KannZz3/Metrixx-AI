@@ -1,0 +1,98 @@
+{
+  "normalized_at": "2026-05-25T01:44:52+00:00",
+  "source_input": "C:\\Users\\78432\\eia_output\\eia_fetch_ready_for_normalize.json",
+  "all_required_ok": true,
+  "required_errors": [],
+  "total_normalized_records": 180,
+  "group_results": [
+    {
+      "series_key": "WTI_CRUDE",
+      "source_id": "EIA_WTI_DAILY",
+      "instrument": "WTI_CRUDE",
+      "delivery_point": "CUSHING_OK",
+      "unit": "USD_PER_BBL",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 112.25,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "series_key": "BRENT_CRUDE",
+      "source_id": "EIA_BRENT_DAILY",
+      "instrument": "BRENT_CRUDE",
+      "delivery_point": "EUROPE",
+      "unit": "USD_PER_BBL",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 116.73,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "series_key": "HENRY_HUB_NG",
+      "source_id": "EIA_HENRY_HUB_DAILY",
+      "instrument": "HENRY_HUB_NG",
+      "delivery_point": "HENRY_HUB_LA",
+      "unit": "USD_PER_MMBTU",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 3.07,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "series_key": "RBOB_GASOLINE_LA",
+      "source_id": "EIA_RBOB_GASOLINE_LA_DAILY",
+      "instrument": "RBOB_GASOLINE",
+      "delivery_point": "LOS_ANGELES",
+      "unit": "USD_PER_GAL",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 4.007,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "series_key": "HEATING_OIL_NYH",
+      "source_id": "EIA_HEATING_OIL_NYH_DAILY",
+      "instrument": "HEATING_OIL",
+      "delivery_point": "NEW_YORK_HARBOR",
+      "unit": "USD_PER_GAL",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 3.931,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "series_key": "JET_FUEL_USGC",
+      "source_id": "EIA_JET_FUEL_USGC_DAILY",
+      "instrument": "JET_FUEL",
+      "delivery_point": "US_GULF_COAST",
+      "unit": "USD_PER_GAL",
+      "ok": true,
+      "input_observation_count": 30,
+      "output_record_count": 30,
+      "latest_timestamp": "2026-05-18",
+      "latest_value": 4.191,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "notes": [
+    "basis_vs_futures is intentionally null in Step 4 because CME futures settlements have not been joined yet.",
+    "futures_contract is intentionally null in Step 4 because futures leg is not available yet.",
+    "No price scaling is applied during normalization; values are only coerced to float and assigned to the standard JSON envelope."
+  ]
+}
