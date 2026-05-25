@@ -1,21 +1,21 @@
 # Metrixx-AI
 
-This repository documents a futures market intelligence research and development project for **Metrixx AI**, focusing on futures data analysis, market structure research, and trading signal framework development for the MY DESK market intelligence platform.
+This repository documents selected components of a futures market intelligence research and development project I contributed to at **Metrixx AI**, focusing on futures data analysis, market structure research, and trading signal framework development for the MY DESK market intelligence platform.
 
-本仓库记录了我在 **Metrixx AI** 参与的商品期货市场情报研发项目，重点包括期货数据分析、市场结构研究，以及面向 MY DESK 市场情报平台的交易信号框架开发。
+本仓库记录了我在 **Metrixx AI** 参与的商品期货市场情报研发项目的部分内容，重点包括期货数据分析、市场结构研究，以及面向 MY DESK 市场情报平台的交易信号框架开发。
 
 ---
 
 ## Project Overview  
 ## 项目概览
 
-The project focuses on transforming futures, physical commodity, positioning, and intraday market-structure data into structured trading intelligence. The core work centers on data-driven futures analysis, basis sentiment interpretation, order-flow behavior, and market structure signal construction.
+This documented work focuses on transforming futures, physical commodity, positioning, and intraday market-structure data into structured market intelligence. The core work centers on data-driven futures analysis, basis sentiment interpretation, order-flow behavior, and market structure signal construction.
 
-本项目旨在将期货价格、现货商品、持仓结构以及日内市场结构数据转化为结构化交易情报。核心工作包括数据驱动的期货分析、基差情绪解读、订单流行为分析以及市场结构信号构建。
+本仓库记录的工作主要围绕将期货价格、现货商品、持仓结构以及日内市场结构数据转化为结构化市场情报。核心内容包括数据驱动的期货分析、基差情绪解读、订单流行为分析以及市场结构信号构建。
 
-The project emphasizes the analytical layer behind market intelligence generation: identifying actionable trading signals, defining market structure logic, validating commodity data inputs, and converting futures-market observations into standardized intelligence outputs.
+The work emphasizes the analytical layer behind market intelligence generation: identifying actionable trading signals, defining market structure logic, validating commodity data inputs, and converting futures-market observations into standardized intelligence outputs.
 
-项目重点在于构建市场情报背后的分析层：识别可操作的交易信号，定义市场结构逻辑，验证商品数据输入，并将期货市场观察转化为标准化情报输出。
+相关工作重点在于构建市场情报背后的分析层：识别可操作的交易信号，定义市场结构逻辑，验证商品数据输入，并将期货市场观察转化为标准化情报输出。
 
 ---
 
