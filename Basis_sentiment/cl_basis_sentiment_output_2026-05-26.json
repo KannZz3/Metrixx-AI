@@ -1,0 +1,9 @@
+{
+    "instrument": "CL",
+    "trade_date": "2026-05-26",
+    "headline": "WTI As-Of Basis +$18.36; Signals Mixed",
+    "narrative": "EIA physical as-of May 18 is $18.36 above CLN26's $93.89 settle, which dropped $2.71. Managed Money positioning rose but sits at the 41st percentile. Narrative is near-neutral. Physical basis is supportive; futures weakness and lagged data limit conviction.",
+    "basis_direction": "mixed",
+    "confidence": 0.54,
+    "data_quality_note": "EIA physical uses latest available 2026-05-18 data; COT uses 2026-05-19 weekly report. Basis is as-of, not exact same-day."
+}
