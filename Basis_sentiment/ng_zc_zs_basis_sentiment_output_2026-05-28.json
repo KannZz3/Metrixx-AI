@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-05-29T16:47:01Z",
+  "service": "BASIS_SENTIMENT_SERVICE",
+  "confidence_method": "FIXED_RULE_BASED_RUBRIC",
+  "outputs": [
+    {
+      "instrument": "NG",
+      "trade_date": "2026-05-28",
+      "headline": "NG Basis -$0.22; Signals Mixed",
+      "narrative": "EIA physical as-of May 18 is $0.22 below NGN26's $3.285 settle. COT remains bearish but positioning is improving, while narrative is mildly bullish. Negative basis and cross-signal divergence limit conviction.",
+      "basis_direction": "mixed",
+      "confidence": 0.46,
+      "data_quality_note": "EIA physical uses latest available 2026-05-18 data; COT uses 2026-05-19 weekly report. Basis is as-of, not exact same-day."
+    },
+    {
+      "instrument": "ZC",
+      "trade_date": "2026-05-28",
+      "headline": "Corn As-Of Basis -$0.03; COT Easing",
+      "narrative": "Corn proxy physical as-of May 22 is $0.03 below ZCN26's $4.5575/bu settle. COT remains bullish but elevated and easing. Narrative is near-neutral to slightly bullish. Near-flat basis and mixed signals limit conviction.",
+      "basis_direction": "mixed",
+      "confidence": 0.42,
+      "data_quality_note": "Physical price is a corn proxy, not strict Decatur or Gulf cash basis. COT uses 2026-05-19 weekly report. Basis is as-of, not exact same-day."
+    },
+    {
+      "instrument": "ZS",
+      "trade_date": "2026-05-28",
+      "headline": "Soy Proxy Basis +$35.23; Mixed",
+      "narrative": "Soybean meal physical as-of May 18 is $35.23 above ZSN26 converted to about $398.17/short ton. COT remains bullish but elevated and easing, while narrative is mildly bullish. Proxy mismatch limits conviction.",
+      "basis_direction": "mixed",
+      "confidence": 0.28,
+      "data_quality_note": "Physical leg is soybean meal, not raw soybeans; futures are unit-converted to USD/short ton. This is related proxy basis, not strict soybean cash basis."
+    }
+  ]
+}
