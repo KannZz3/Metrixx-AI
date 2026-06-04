@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metrixx.AI — Intern WO Distribution · June 12 Sprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,500;0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0a0c0f;--paper:#f5f3ee;--paper2:#ece9e2;--paper3:#dedad1;
+  --green:#00b87a;--gd:#007a52;--red:#e83030;--amber:#f5a623;
+  --blue:#185fa5;--purple:#534AB7;--teal:#0d9488;
+  --rule:rgba(10,12,15,0.11);
+  --mono:'IBM Plex Mono',monospace;--cond:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;min-height:100vh;}
+.cover{background:var(--ink);min-height:100vh;padding:0;display:flex;flex-direction:column;}
+.cover-top{padding:36px 40px 0;border-bottom:3px solid var(--green);}
+.cover-brand{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+.cover-title{font-family:var(--cond);font-weight:900;font-size:56px;line-height:0.95;color:#fff;letter-spacing:-0.02em;margin-bottom:8px;}
+.cover-title em{color:var(--green);font-style:italic;}
+.cover-sub{font-family:var(--mono);font-size:11px;color:rgba(245,243,238,0.35);letter-spacing:0.06em;margin-bottom:24px;}
+.cover-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:rgba(255,255,255,0.06);}
+.cover-meta-cell{padding:14px 16px;background:rgba(255,255,255,0.03);}
+.cmc-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,243,238,0.3);margin-bottom:4px;}
+.cmc-val{font-family:var(--cond);font-weight:700;font-size:18px;color:#fff;line-height:1.1;}
+.cmc-val.green{color:var(--green);}.cmc-val.red{color:var(--red);}.cmc-val.amber{color:var(--amber);}
+.cover-body{flex:1;padding:32px 40px;}
+.forecast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-bottom:28px;}
+.fc{padding:14px 16px;border:1px solid rgba(255,255,255,0.08);}
+.fc-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.fc-item{font-size:12px;line-height:1.5;margin-bottom:3px;}
+.HIGH{color:var(--green);}.MED{color:var(--amber);}.LOW{color:var(--red);}
+.fc-label-green{color:var(--green);}.fc-label-amber{color:var(--amber);}.fc-label-red{color:var(--red);}
+.intern-nav{background:var(--paper2);border-bottom:2px solid var(--rule);padding:0;display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100;}
+.intern-nav::-webkit-scrollbar{display:none;}
+.itab{font-family:var(--mono);font-size:10px;letter-spacing:0.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;color:rgba(10,12,15,0.4);border-bottom:3px solid transparent;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none;transition:all 0.12s;flex-shrink:0;}
+.itab:hover{color:var(--ink);background:rgba(10,12,15,0.03);}
+.itab.active{color:var(--ink);font-weight:500;}
+.itab.aras.active{border-bottom-color:var(--amber);}
+.itab.anna.active{border-bottom-color:var(--blue);}
+.itab.jocelyn.active{border-bottom-color:var(--green);}
+.itab.zilin.active{border-bottom-color:var(--purple);}
+.itab.lambert.active{border-bottom-color:var(--teal);}
+.ipanel{display:none;padding:0;}
+.ipanel.active{display:block;}
+.iheader{padding:24px 36px 20px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.ih-name{font-family:var(--cond);font-weight:900;font-size:36px;line-height:1;letter-spacing:-0.01em;}
+.ih-role{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,12,15,0.4);margin-top:4px;}
+.ih-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.chip{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;}
+.chip-green{background:var(--gd);color:#fff;}.chip-amber{background:var(--amber);color:var(--ink);}
+.chip-red{background:var(--red);color:#fff;}.chip-blue{background:var(--blue);color:#fff;}
+.chip-ink{background:var(--ink);color:var(--green);}.chip-rule{background:var(--paper3);color:rgba(10,12,15,0.55);border:1px solid var(--rule);}
+.chip-teal{background:var(--teal);color:#fff;}
+.icontent{padding:24px 36px;max-width:900px;}
+.ssf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;}
+.ssf-cell{padding:14px 16px;}
+.ssf-stop{background:rgba(232,48,48,0.07);border-left:3px solid var(--red);}
+.ssf-start{background:rgba(0,122,82,0.07);border-left:3px solid var(--gd);}
+.ssf-focus{background:rgba(245,166,35,0.07);border-left:3px solid var(--amber);}
+.ssf-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;}
+.ssf-stop .ssf-lbl{color:var(--red);}.ssf-start .ssf-lbl{color:var(--gd);}.ssf-focus .ssf-lbl{color:var(--amber);}
+.ssf-item{font-size:12px;line-height:1.5;color:rgba(10,12,15,0.7);margin-bottom:4px;padding-left:10px;position:relative;}
+.ssf-item::before{content:'·';position:absolute;left:0;color:rgba(10,12,15,0.3);}
+.cl-section{margin-bottom:20px;}
+.cl-head{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:6px 10px;margin-bottom:0;}
+.cl-head-p1{background:var(--ink);color:var(--green);}
+.cl-head-p2{background:var(--paper3);color:rgba(10,12,15,0.5);border:1px solid var(--rule);}
+.cl-head-crit{background:var(--red);color:#fff;}
+.cl-item{display:flex;gap:10px;padding:8px 10px;border-bottom:1px solid var(--rule);align-items:flex-start;background:var(--paper2);}
+.cl-item:nth-child(even){background:var(--paper);}
+.cl-item:last-child{border-bottom:none;}
+.cl-box{width:16px;height:16px;border:1.5px solid rgba(10,12,15,0.25);flex-shrink:0;margin-top:1px;}
+.cl-box.gate{border-color:var(--amber);background:rgba(245,166,35,0.1);}
+.cl-box.crit{border-color:var(--red);background:rgba(232,48,48,0.1);}
+.cl-text{font-size:12px;line-height:1.55;color:rgba(10,12,15,0.75);flex:1;}
+.cl-text strong{color:var(--ink);font-weight:600;}
+.cl-due{font-family:var(--mono);font-size:9px;color:rgba(10,12,15,0.3);flex-shrink:0;white-space:nowrap;padding-top:2px;}
+.demo-box{background:var(--ink);padding:16px 20px;margin-bottom:20px;display:flex;gap:18px;align-items:flex-start;}
+.demo-icon{font-family:var(--cond);font-weight:900;font-style:italic;font-size:36px;color:var(--green);flex-shrink:0;line-height:1;}
+.demo-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,243,238,0.3);margin-bottom:4px;}
+.demo-title{font-family:var(--cond);font-weight:700;font-size:16px;color:#fff;margin-bottom:4px;}
+.demo-items{font-size:12px;line-height:1.65;color:rgba(245,243,238,0.55);}
+.p2-box{background:var(--paper3);border:1px solid var(--rule);padding:14px 16px;margin-bottom:20px;}
+.p2-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,12,15,0.35);margin-bottom:8px;}
+.p2-items{font-size:12px;line-height:1.65;color:rgba(10,12,15,0.6);}
+.note-box{border-left:3px solid var(--amber);padding:10px 14px;margin-bottom:18px;background:rgba(245,166,35,0.07);}
+.note-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;}
+.note-text{font-size:12px;line-height:1.55;color:rgba(10,12,15,0.7);}
+.confirm-box{border-left:3px solid var(--gd);padding:10px 14px;margin-bottom:18px;background:rgba(0,122,82,0.06);}
+.confirm-lbl{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gd);margin-bottom:4px;}
+.confirm-text{font-size:12px;line-height:1.55;color:rgba(10,12,15,0.7);}
+.kv{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:12px;}
+.kv td{padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top;}
+.kv td:first-child{font-family:var(--mono);font-size:8px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,12,15,0.38);width:140px;padding-right:12px;white-space:nowrap;}
+.kv tr{background:var(--paper2);}.kv tr:nth-child(even){background:var(--paper);}
+.doc-footer{background:var(--ink);border-top:3px solid var(--green);padding:12px 36px;display:flex;justify-content:space-between;align-items:center;margin-top:32px;}
+.df-tm{font-family:var(--mono);font-size:8px;letter-spacing:0.05em;text-transform:uppercase;color:rgba(245,243,238,0.22);line-height:1.8;}
+.df-tm strong{color:rgba(245,243,238,0.45);}
+.df-verb{font-family:var(--cond);font-weight:900;font-style:italic;font-size:14px;color:rgba(245,243,238,0.07);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ipanel.active .icontent{animation:fadeIn 0.35s ease both;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover" id="cover-page">
+  <div class="cover-top">
+    <div class="cover-brand">Metrixx LLC — Confidential · Sprint WO Distribution v2 · May 31, 2026</div>
+    <div class="cover-title">12 Days.<br><em>Ship it.</em></div>
+    <div class="cover-sub">Individual Work Orders · Forecast · Phase 2 Preview · Distribute Immediately</div>
+    <div class="cover-meta">
+      <div class="cover-meta-cell"><div class="cmc-lbl">Demo Day</div><div class="cmc-val red">June 12, 2026</div></div>
+      <div class="cover-meta-cell"><div class="cmc-lbl">Calendar Days</div><div class="cmc-val red">12</div></div>
+      <div class="cover-meta-cell"><div class="cmc-lbl">Effective Work Days</div><div class="cmc-val amber">8–9</div></div>
+      <div class="cover-meta-cell"><div class="cmc-lbl">Travel Impact</div><div class="cmc-val amber">Jocelyn + Anna</div></div>
+      <div class="cover-meta-cell"><div class="cmc-lbl">Ingestion Layer</div><div class="cmc-val green">Claude + RC Native</div></div>
+      <div class="cover-meta-cell"><div class="cmc-lbl">Phase 2 Start</div><div class="cmc-val">June 13</div></div>
+    </div>
+  </div>
+  <div class="cover-body">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,243,238,0.3);margin-bottom:14px;">Jim Marzano — Demo Day Forecast · May 31, 2026</div>
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">▸ Architecture update: MAKE.com pipeline removed from Aras scope. Document ingestion routes through Claude API + Rocket.Chat natively.</div>
+    <div class="forecast-grid">
+      <div class="fc">
+        <div class="fc-lbl fc-label-green">HIGH PROBABILITY · June 12</div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">Claude API live in MY DESK</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">5 Futures prompts in Catalog</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">MASSIVE feed validated (Zilin)</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">Rocket.Chat provisioned</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">WATOS trigger phrase active</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">VAULT schema deployed</span></div>
+        <div class="fc-item HIGH">✓ <span style="color:#e8e6e0;">MIXX ES regime label visible</span></div>
+      </div>
+      <div class="fc">
+        <div class="fc-lbl fc-label-amber">MODERATE · Needs attention</div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">VAULT session archiving live</span></div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">Typeform → PostgreSQL active</span></div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">WATOS HTML report renders</span></div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">VAULT recall button (basic)</span></div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">USER GUIDE Cards 01–04</span></div>
+        <div class="fc-item MED">◈ <span style="color:#e8e6e0;">Excel XLAM template (Anna)</span></div>
+      </div>
+      <div class="fc">
+        <div class="fc-lbl fc-label-red">PHASE 2 — Sequenced correctly</div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">WATOS Excel generator wired</span></div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">Retroactive VAULT migration</span></div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">VAULT Upload function</span></div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">CME reference data upload</span></div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">Micro Futures prompts</span></div>
+        <div class="fc-item LOW">▷ <span style="color:#e8e6e0;">Prompt Catalog mockup (Lambert+Jocelyn)</span></div>
+      </div>
+    </div>
+    <div style="font-size:12px;line-height:1.7;color:rgba(245,243,238,0.45);max-width:760px;margin-bottom:20px;">
+      <strong style="color:rgba(245,243,238,0.7);">Key changes in this version:</strong> MAKE.com removed from Aras — document ingestion now routes through Claude API + Rocket.Chat directly, no orchestration middleware. Zilin + Lambert confirmed for CME reference data upload and Micro Futures internal prompts (post production-readiness gate). Lambert + Jocelyn assigned Prompt Catalog mockup as Phase 2 week-one item.
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="showIntern('aras')" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;background:var(--amber);color:var(--ink);border:none;cursor:pointer;">Aras Chang →</button>
+      <button onclick="showIntern('anna')" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;background:var(--blue);color:#fff;border:none;cursor:pointer;">Anna Wang →</button>
+      <button onclick="showIntern('jocelyn')" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;background:var(--gd);color:#fff;border:none;cursor:pointer;">Jocelyn Wu →</button>
+      <button onclick="showIntern('zilin')" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;background:var(--purple);color:#fff;border:none;cursor:pointer;">Zilin Mao →</button>
+      <button onclick="showIntern('lambert')" style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;background:var(--teal);color:#fff;border:none;cursor:pointer;">Lambert Hsu →</button>
+    </div>
+  </div>
+</div>
+
+<!-- INTERN SECTION -->
+<div id="intern-section" style="display:none;">
+<div class="intern-nav">
+  <button class="itab aras" onclick="switchTab('aras',this)">Aras Chang</button>
+  <button class="itab anna" onclick="switchTab('anna',this)">Anna Wang</button>
+  <button class="itab jocelyn" onclick="switchTab('jocelyn',this)">Jocelyn Wu</button>
+  <button class="itab zilin" onclick="switchTab('zilin',this)">Zilin Mao</button>
+  <button class="itab lambert" onclick="switchTab('lambert',this)">Lambert Hsu</button>
+  <button onclick="showCover()" style="font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 14px;background:none;border:none;cursor:pointer;color:rgba(10,12,15,0.3);margin-left:auto;">← Forecast</button>
+</div>
+
+<!-- ══════════════ ARAS ══════════════ -->
+<div class="ipanel" id="tab-aras">
+  <div class="iheader">
+    <div>
+      <div class="ih-name" style="color:var(--amber);">Aras Chang</div>
+      <div class="ih-role">Prompt Engineering · Prompt Catalog · WATOS Trigger · USER GUIDE</div>
+    </div>
+    <div class="ih-right">
+      <span class="chip chip-ink">WO-CHANG-03</span>
+      <span class="chip chip-amber">12 Days</span>
+      <span class="chip chip-green">No travel impact</span>
+    </div>
+  </div>
+  <div class="icontent">
+
+    <div class="confirm-box">
+      <div class="confirm-lbl">Architecture confirmation — MAKE.com removed</div>
+      <div class="confirm-text">Document ingestion (TradingView screenshots, PDFs, Excel) now routes through <strong>Claude API + Rocket.Chat natively</strong>. No MAKE.com orchestration required for this function. A subscriber uploads or shares a file in their MY DESK Rocket.Chat room → Claude API processes it directly → response streams into the thread → VAULT archives the session. Aras: you are no longer responsible for MAKE.com pipeline scenarios. Your scope is Prompt Catalog, WATOS trigger, and USER GUIDE only.</div>
+    </div>
+
+    <div class="ssf">
+      <div class="ssf-cell ssf-stop">
+        <div class="ssf-lbl">Stop</div>
+        <div class="ssf-item">Any MAKE.com scenario development</div>
+        <div class="ssf-item">Iterating on prompt variations already tested</div>
+        <div class="ssf-item">Adding prompt categories beyond Futures + WATOS</div>
+      </div>
+      <div class="ssf-cell ssf-start">
+        <div class="ssf-lbl">Start</div>
+        <div class="ssf-item">Locking and formatting existing prompts today</div>
+        <div class="ssf-item">Coordinating encryption key with Dimitris</div>
+        <div class="ssf-item">Writing WATOS Activation Prompt</div>
+      </div>
+      <div class="ssf-cell ssf-focus">
+        <div class="ssf-lbl">Focus</div>
+        <div class="ssf-item">5 encrypted Catalog entries — Jun 5</div>
+        <div class="ssf-item">WATOS trigger live — Jun 7</div>
+        <div class="ssf-item">USER GUIDE Cards 01–04 — Jun 9</div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="note-lbl">Note on Dimitris collaboration</div>
+      <div class="note-text">The market data fetch prompts you built with Dimitris are the foundation of the Prompt Catalog. <strong>Lock them exactly as tested.</strong> Encrypt and deliver to Anna for PostgreSQL INSERT. Do not continue developing new variations until existing entries are confirmed live in MY DESK. That confirmation is your green light to iterate further.</div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head cl-head-crit">PHASE 1 — HARD DELIVERABLES · All dates firm</div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 3:</strong> Format and finalize 5 Futures prompt entries for Anna's DB insert. Fields required: title, prompt_body (plaintext), instrument_family=['futures'], methodology_tags, tier_required, backtest_eligible. Instruments: ES Daily Setup · ES COT Analysis · CL Gamma Reading · GC IV Rank · Weekly Outlook.</div><div class="cl-due">Jun 3</div></div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 4:</strong> Coordinate encryption key with Dimitris. Encrypt all 5 prompt_body fields. Deliver encrypted rows to Anna. Confirm prompt_library INSERT succeeds — fetch one prompt via the API to verify before moving on.</div><div class="cl-due">Jun 4</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 5:</strong> Store WATOS™ Activation Prompt as encrypted entry in prompt_library. Label: WATOS_ACTIVATION. tier: standard. Confirm it is retrievable by the system but NOT visible in the subscriber-facing Catalog UI.</div><div class="cl-due">Jun 5</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 6:</strong> Implement MY DESK trigger detection for "WATOS this" and "Run WATOS" phrases. These phrases must append WATOS_ACTIVATION prompt to the current session automatically before the Claude API call. Test with the IBM Gamma Playbook response — confirm WATOS JSON is returned.</div><div class="cl-due">Jun 6</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 9:</strong> Write USER GUIDE Cards 01–04 content: Getting Started · Prompt Catalog · VAULT · WATOS. Deliver text to Jocelyn for #my-desk-guide room. Each card needs: title, 2–3 sentence body (institutional tone), and a click-to-demo prompt template. No consumer language anywhere.</div><div class="cl-due">Jun 9</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 10:</strong> GATE — Jim reviews all Prompt Catalog entries live in MY DESK. Institutional accuracy sign-off required. Any entry failing review is corrected same day.</div><div class="cl-due">Jun 10 ◆</div></div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-icon">Jun 12</div>
+      <div class="demo-content">
+        <div class="demo-lbl">Aras — Demo Day Deliverable</div>
+        <div class="demo-title">Prompt Catalog live · WATOS trigger active · USER GUIDE 01–04 visible</div>
+        <div class="demo-items">Demo: click Futures Daily Setup → Claude streams response → type "WATOS this" → WATOS JSON generated → HTML report renders · USER GUIDE Cards 01–04 accessible in #my-desk-guide</div>
+      </div>
+    </div>
+
+    <div class="p2-box">
+      <div class="p2-lbl">Phase 2 — June 13 onward (Aras)</div>
+      <div class="p2-items">VAULT Upload Normalization Prompt (write + test against 5 external file formats — portfolio CSV, Bloomberg export, 13-F filing, IBM options Excel, Futures rate sheet) · Claude + Rocket.Chat ingestion prompt for file attachments · USER GUIDE Cards 05–11 · MRS lender rate sheet ingestion prompt for Lambert · ETF prompt section (3 entries, with Lambert)</div>
+    </div>
+
+    <table class="kv">
+      <tr><td>Reports to</td><td>Jim Marzano · coordinate with Jocelyn on WATOS JSON schema — any schema change requires joint sign-off</td></tr>
+      <tr><td>Escalation</td><td>Dimitris for any infrastructure or encryption blocker — use the working relationship you have</td></tr>
+      <tr><td>Hard rule</td><td>No new prompt categories until 5 core entries are confirmed live in MY DESK. Confirmation email to Jim when live.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ ANNA ══════════════ -->
+<div class="ipanel" id="tab-anna">
+  <div class="iheader">
+    <div>
+      <div class="ih-name" style="color:var(--blue);">Anna / Cong Wang</div>
+      <div class="ih-role">PostgreSQL Schema · Typeform Registry · Rocket.Chat Provisioning · Excel XLAM</div>
+    </div>
+    <div class="ih-right">
+      <span class="chip chip-ink">WO-WANG-03</span>
+      <span class="chip chip-red">Travel: 3–4 days lost</span>
+      <span class="chip chip-rule">Critical Path — Everyone gates on Anna</span>
+    </div>
+  </div>
+  <div class="icontent">
+
+    <div style="background:rgba(232,48,48,0.07);border-left:3px solid var(--red);padding:10px 14px;margin-bottom:18px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px;">Critical path — read this first</div>
+      <div style="font-size:12px;line-height:1.55;color:rgba(10,12,15,0.7);">Every other intern gates on Anna's PostgreSQL schema. Aras cannot insert encrypted prompts. Jocelyn cannot wire VAULT archiving. Zilin cannot confirm prompt delivery. <strong>June 4 is non-negotiable.</strong> Travel is acknowledged — scope has been trimmed accordingly. If any Coolify or PostgreSQL blocker appears: contact Dimitris immediately, not at the next standup.</div>
+    </div>
+
+    <div class="ssf">
+      <div class="ssf-cell ssf-stop">
+        <div class="ssf-lbl">Stop</div>
+        <div class="ssf-item">Any Excel formatting or design work</div>
+        <div class="ssf-item">XLAM sidebar development (Phase 2)</div>
+        <div class="ssf-item">Anything not on this list</div>
+      </div>
+      <div class="ssf-cell ssf-start">
+        <div class="ssf-lbl">Start</div>
+        <div class="ssf-item">PostgreSQL migrations — today, remote if needed</div>
+        <div class="ssf-item">Typeform form activation</div>
+        <div class="ssf-item">Rocket.Chat user provisioning</div>
+      </div>
+      <div class="ssf-cell ssf-focus">
+        <div class="ssf-lbl">Focus</div>
+        <div class="ssf-item">Schema live Jun 4 — this is the whole job</div>
+        <div class="ssf-item">Typeform → DB by Jun 6</div>
+        <div class="ssf-item">RC rooms + accounts by Jun 7</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head cl-head-crit">PHASE 1 — CRITICAL PATH · Jun 4 schema deployment is the entire sprint gate</div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 4 HARD GATE:</strong> Deploy 5 core PostgreSQL tables on Coolify production. vault_sessions · vault_reports · prompt_library · subscribers · vault_errors. Also: add migration_source TEXT to vault_sessions, upload_limit INT to subscribers (0=On Demand, 3=Standard, 999=Founder). Dimitris validates migrations before production push. Send confirmation to Jim, Aras, Jocelyn — this email IS the gate-open signal.</div><div class="cl-due">Jun 4 🔴</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 5:</strong> Activate Typeform REGISTRY intake. Wire MAKE.com webhook: Typeform submit → INSERT to subscribers with auto-generated SUBSCRIBER_ID (MX + 4 digits). Test with 3 submissions. Confirm collision-safe ID generation.</div><div class="cl-due">Jun 5</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 6:</strong> Deliver list of 10 test SUBSCRIBER_IDs to Aras and Jocelyn. Required for WATOS naming convention testing and VAULT session routing.</div><div class="cl-due">Jun 6</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 7:</strong> Create all Rocket.Chat accounts at chat.metrixx.ai: Jim · Aras · Anna · Jocelyn · Zilin · Dimitris · Lambert. Create rooms: #general · #futures · #metrixx-ai · #watos-reports · #vault-archive · #intern-standup · #my-desk-guide (read-only for subscribers). Confirm private network isolation.</div><div class="cl-due">Jun 7</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 9:</strong> Provision Demo Day guest account — read-only to #metrixx-ai and #watos-reports only. Test login from outside the team network.</div><div class="cl-due">Jun 9</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 10 (best effort):</strong> Excel XLAM template — branded shell with VAULT™ + WATOS™ disclaimer footer and partner line (TradingView · NinjaTrader). A non-functional branded Excel shell is acceptable for Demo Day. Working XLAM with Claude sidebar is Phase 2.</div><div class="cl-due">Jun 10 ◆</div></div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-icon">Jun 12</div>
+      <div class="demo-content">
+        <div class="demo-lbl">Anna — Demo Day Deliverable</div>
+        <div class="demo-title">VAULT schema live · Typeform active · Rocket.Chat provisioned</div>
+        <div class="demo-items">Demo: Typeform submit → SUBSCRIBER_ID in DB · Rocket.Chat login and rooms working · Excel template shown (XLAM Phase 2 if not ready)</div>
+      </div>
+    </div>
+
+    <div class="p2-box">
+      <div class="p2-lbl">Phase 2 — June 13 onward (Anna)</div>
+      <div class="p2-items">vault_uploads table (VAULT Upload feature) · security_events table · Working Excel XLAM with Claude sidebar · MRS lender database schema (with Lambert) · PREQUEL property schema</div>
+    </div>
+
+    <table class="kv">
+      <tr><td>Reports to</td><td>Jim Marzano · Dimitris for schema review and migration validation</td></tr>
+      <tr><td>Travel note</td><td>PostgreSQL migrations can be written and pushed remotely — prioritize this over any in-person obligations while traveling</td></tr>
+      <tr><td>Escalation rule</td><td>Any Coolify or DB blocker goes to Dimitris immediately — not at standup. Time is the constraint.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ JOCELYN ══════════════ -->
+<div class="ipanel" id="tab-jocelyn">
+  <div class="iheader">
+    <div>
+      <div class="ih-name" style="color:var(--gd);">Jocelyn Wu</div>
+      <div class="ih-role">Full-Stack Lead · Claude API · VAULT Archiving · WATOS Renderer · Code Authority</div>
+    </div>
+    <div class="ih-right">
+      <span class="chip chip-ink">WO-WU-03</span>
+      <span class="chip chip-red">Travel: 3–4 days lost</span>
+      <span class="chip chip-green">Code Authority</span>
+    </div>
+  </div>
+  <div class="icontent">
+
+    <div class="note-box">
+      <div class="note-lbl">Travel impact — scope trimmed</div>
+      <div class="note-text">WATOS Excel generator integration, retroactive RC migration script, and print/PDF export are moved to Phase 2. Phase 1 focus is three things only: <strong>Claude API thread live · VAULT session archiving · WATOS HTML renderer dynamic</strong>. These three items ARE the demo. Steps 1–2 below have zero gate dependency — start today without waiting for Anna.</div>
+    </div>
+
+    <div class="ssf">
+      <div class="ssf-cell ssf-stop">
+        <div class="ssf-lbl">Stop</div>
+        <div class="ssf-item">WATOS Excel generator wiring (Phase 2)</div>
+        <div class="ssf-item">Retroactive RC migration (Phase 2)</div>
+        <div class="ssf-item">Print/PDF export (Phase 2)</div>
+      </div>
+      <div class="ssf-cell ssf-start">
+        <div class="ssf-lbl">Start</div>
+        <div class="ssf-item">Claude API thread — today, no gate needed</div>
+        <div class="ssf-item">Prompt Catalog UI stub — today</div>
+        <div class="ssf-item">VAULT archiving after Jun 4 Anna gate</div>
+      </div>
+      <div class="ssf-cell ssf-focus">
+        <div class="ssf-lbl">Focus</div>
+        <div class="ssf-item">Streaming Claude in MY DESK — Jun 5</div>
+        <div class="ssf-item">VAULT archive chip visible — Jun 6</div>
+        <div class="ssf-item">WATOS renderer live — Jun 10</div>
+      </div>
+    </div>
+
+    <div class="confirm-box">
+      <div class="confirm-lbl">Claude + Rocket.Chat ingestion — your architecture to wire</div>
+      <div class="confirm-text">Document ingestion (screenshots, PDFs, Excel shared by subscriber in MY DESK) routes through Claude API directly — no MAKE.com middleware. When a subscriber shares a file attachment in their Rocket.Chat MY DESK room, the bot intercepts it, passes it to Claude API with the file as base64 content, and streams the response back into the thread. VAULT archives the session. This is simpler than the MAKE.com approach and you own the full stack.</div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head cl-head-crit">PHASE 1 — STEPS 1–2 HAVE NO GATE DEPENDENCY · Start today</div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 3 — no gate needed:</strong> Wire Claude API (claude-sonnet-4-6) to MY DESK Rocket.Chat thread. System prompt: Metrixx.AI role + compliance chain + instrument context placeholder. Streaming response active — first token in MY DESK under 3 seconds. Model routing: Sonnet 4.6 for Standard/Founder, Haiku 4.5 for On Demand.</div><div class="cl-due">Jun 3</div></div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 4 — no gate needed:</strong> Wire Prompt Catalog UI. Left panel loads prompts from GET /prompts endpoint. Subscriber clicks prompt → auto-populates ASK METRIXX bar → submits to Claude. Stub the API with one hardcoded test prompt if Anna's DB is not live — do not block on this.</div><div class="cl-due">Jun 4</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 5 — after Anna Jun 4 gate:</strong> Wire VAULT session archiving. Every Claude response → INSERT to vault_sessions (prompt_snapshot, response_text, model_used, instrument context). vault_errors fallback — never surface DB errors to subscriber. Test: 5 sessions, confirm all 5 in database.</div><div class="cl-due">Jun 5 ◆</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 6:</strong> Add VAULT archive confirmation chip to MY DESK thread header after each response: "● VAULT™ archived · [8-char session ID]". This is the visual proof the archive is working — critical for Demo Day. Also build basic VAULT RECALL: last 5 sessions for current instrument, click to reload.</div><div class="cl-due">Jun 6</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 7–8:</strong> Replace static SCENARIOS object in WATOS_Score_Report.html with dynamic JSON loader. Wire to Coolify route /reports/watos/{VAULT_ID}. Self-host Barlow Condensed + IBM Plex Mono fonts. Test with all 4 demo scenarios (BCS-74, BPS-68, Strangle-52, IC-81).</div><div class="cl-due">Jun 8</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 9:</strong> WATOS VAULT write-on-render: INSERT to vault_reports on first render, html_blob + VAULT_ID. Naming: WATOS_{SUBSCRIBER_ID}_{UNDERLYING}_{STRATEGY_CODE}_{YYYYMMDD}_{SESSION}. Duplicate: _v2 suffix, never overwrite. Also: implement #my-desk-guide HOW-TO card click handler (Aras delivers content Jun 9).</div><div class="cl-due">Jun 9</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 11:</strong> Full end-to-end rehearsal. MY DESK → Prompt Catalog → Claude streams → VAULT chip → "WATOS this" → WATOS report renders → VAULT RECALL retrieves session. Any failure: fix same day, escalate infrastructure issues to Dimitris.</div><div class="cl-due">Jun 11 🔴</div></div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-icon">Jun 12</div>
+      <div class="demo-content">
+        <div class="demo-lbl">Jocelyn — Demo Day Deliverable</div>
+        <div class="demo-title">MY DESK live · VAULT archiving · WATOS renderer · Recall working</div>
+        <div class="demo-items">Futures prompt → streaming response → VAULT chip confirms archive → "WATOS this" → WATOS HTML renders at /reports/watos/{ID} · VAULT RECALL shows last session · 4 WATOS demo scenarios loadable by VAULT_ID</div>
+      </div>
+    </div>
+
+    <div class="p2-box">
+      <div class="p2-lbl">Phase 2 — June 13 onward (Jocelyn)</div>
+      <div class="p2-items">VAULT Upload endpoint (POST /vault/upload) · ClamAV scan integration · File extraction layer (Excel/CSV/Mistral routing) · Portfolio context injection into Claude API calls · Retroactive RC session migration script · WATOS Excel generator wiring · Prompt Catalog mockup with Lambert (Claude design artifacts) · MRS lender data pipeline support</div>
+    </div>
+
+    <table class="kv">
+      <tr><td>Code authority</td><td>All intern code reviewed by Jocelyn before Dimitris deploys — this role does not change despite travel compression</td></tr>
+      <tr><td>Gate rule</td><td>Steps 1–2 start today — no dependency. Steps 3+ depend on Anna schema Jun 4.</td></tr>
+      <tr><td>Phase 2 pairing</td><td>Prompt Catalog mockup with Lambert — first Phase 2 week assignment. Use Claude design artifacts to produce the reference spec the whole team builds against.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ ZILIN ══════════════ -->
+<div class="ipanel" id="tab-zilin">
+  <div class="iheader">
+    <div>
+      <div class="ih-name" style="color:var(--purple);">Zilin Mao</div>
+      <div class="ih-role">Analytics · Futures Prompts · MASSIVE Feed · MIXX Signal · CME Reference Data</div>
+    </div>
+    <div class="ih-right">
+      <span class="chip chip-ink">WO-MAO-03</span>
+      <span class="chip chip-green">No travel impact</span>
+      <span class="chip chip-green">Fully independent</span>
+    </div>
+  </div>
+  <div class="icontent">
+
+    <div class="confirm-box">
+      <div class="confirm-lbl">Confirmed — two Phase 2 assignments added</div>
+      <div class="confirm-text"><strong>1. Micro Futures internal prompts</strong> (with Lambert, time permitting): Zilin and Lambert may begin Micro Futures internal-use-only prompt development as soon as WATOS, VAULT, and futures market data services are confirmed production-ready. Not before. This is an internal platform capability — not subscriber-facing until Jim releases it. <strong>2. CME reference data upload</strong> (with Lambert): Zilin owns content accuracy for the CME product description library — contract specs, rollover dates, CME Group calendar. Lambert co-authors. These documents upload to VAULT as a reference layer accessible by any Metrixx.ai user prompt.</div>
+    </div>
+
+    <div class="ssf">
+      <div class="ssf-cell ssf-stop">
+        <div class="ssf-lbl">Stop</div>
+        <div class="ssf-item">More than 5 prompt variants per instrument</div>
+        <div class="ssf-item">Backtesting beyond ES for Demo Day</div>
+        <div class="ssf-item">Waiting on infrastructure — run parallel now</div>
+      </div>
+      <div class="ssf-cell ssf-start">
+        <div class="ssf-lbl">Start</div>
+        <div class="ssf-item">Lock 5 core Futures prompts today</div>
+        <div class="ssf-item">MASSIVE feed validation — target Jun 6</div>
+        <div class="ssf-item">MIXX ES regime label — coordinate with Jocelyn</div>
+      </div>
+      <div class="ssf-cell ssf-focus">
+        <div class="ssf-lbl">Focus</div>
+        <div class="ssf-item">Prompts to Aras by Jun 5 — firm</div>
+        <div class="ssf-item">Feed report by Jun 6</div>
+        <div class="ssf-item">WATOS weight spec by Jun 8</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head cl-head-p1">PHASE 1 — FULLY INDEPENDENT · No blockers · Full speed now</div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 3–4:</strong> Lock 5 core Futures prompts. Instruments: ES (Daily Setup + COT Analysis) · CL (Gamma Reading) · GC (IV Rank) · ZC (Weekly Outlook). Format per Catalog schema. Jim quality review by Jun 3 — send today if not already sent.</div><div class="cl-due">Jun 4</div></div>
+      <div class="cl-item"><div class="cl-box crit"></div><div class="cl-text"><strong>Jun 5:</strong> Deliver all 5 formatted, Jim-reviewed prompt entries to Aras for encryption and Catalog insert. This is a hard date for Aras's encryption timeline — do not slip it.</div><div class="cl-due">Jun 5</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 6:</strong> MASSIVE data feed validation report — 1 page maximum. Sections: instruments confirmed live (ES, NQ, CL, GC minimum) · data gaps · latency measured (target &lt;500ms intraday) · anomalies. Send to Jim and Jocelyn.</div><div class="cl-due">Jun 6</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 7:</strong> MIXX regime classification live for ES. Current regime label must appear in MY DESK market panel on Demo Day. Coordinate with Jocelyn on the display hook. Classifications: DISTRIBUTION · ACCUMULATION · RANGE-BOUND · COMPRESSION · TRENDING.</div><div class="cl-due">Jun 7</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 8:</strong> WATOS scoring weight justification — 1–2 pages. Why 25/22/20/18/15. Microstructure rationale per factor. Sign off on all 4 demo scenarios: BCS-74, BPS-68, Strangle-52, IC-81. Adjust if not defensible.</div><div class="cl-due">Jun 8</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 9–10:</strong> ES 30-day backtest: WATOS regime classification accuracy. 1-page summary — what % of sessions correctly classified? Jim uses this number as a Demo Day talking point.</div><div class="cl-due">Jun 10</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 11:</strong> Demo rehearsal. Demonstrate at least 2 live Futures prompts (ES Daily Setup + CL Gamma Reading). MIXX regime label visible. WATOS weight spec presentable. Feed confirmed running. Own this segment of the demo.</div><div class="cl-due">Jun 11 🔴</div></div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-icon">Jun 12</div>
+      <div class="demo-content">
+        <div class="demo-lbl">Zilin — Demo Day Deliverable</div>
+        <div class="demo-title">5 Futures prompts live · MASSIVE validated · MIXX ES regime active</div>
+        <div class="demo-items">Demo: ES Daily Setup → Claude + MASSIVE data → MIXX shows regime label · WATOS weight spec presented · 30-day backtest accuracy number ready for Jim</div>
+      </div>
+    </div>
+
+    <div class="p2-box">
+      <div class="p2-lbl">Phase 2 — June 13 onward (Zilin) · Production-readiness gate required before items marked ▸</div>
+      <div class="p2-items">
+        ▸ <strong>Micro Futures internal prompts</strong> (with Lambert) — begins only after WATOS + VAULT + futures data confirmed production-ready. Internal use only until Jim releases.<br><br>
+        ▸ <strong>CME reference data upload</strong> (with Lambert) — CME product descriptions, contract specifications, rollover dates, CME Group full calendar. Zilin owns content accuracy (futures expertise). Lambert co-authors. Uploaded to VAULT as a shared reference layer accessible by any user prompt. Format: structured documents per instrument family, uploaded via VAULT once the upload endpoint is live (Jocelyn, Jun 20 target).<br><br>
+        Expand Futures prompt set to full 8 instruments (NQ, ZC, ZS, ZW, ZN) · MIXX full multi-contract PCA composite · WATOS backtesting methodology formalized
+      </div>
+    </div>
+
+    <table class="kv">
+      <tr><td>Reports to</td><td>Jim Marzano · deliver MIXX display hook spec to Jocelyn</td></tr>
+      <tr><td>Prompt delivery</td><td>Aras needs prompts by Jun 5 — his encryption timeline depends on this date</td></tr>
+      <tr><td>Phase 2 gate</td><td>Micro Futures prompts and CME upload begin only after WATOS + VAULT + futures data confirmed production-ready by Jim</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ LAMBERT ══════════════ -->
+<div class="ipanel" id="tab-lambert">
+  <div class="iheader">
+    <div>
+      <div class="ih-name" style="color:var(--teal);">Lambert Hsu</div>
+      <div class="ih-role">Real Estate Vertical · MRS MVP · PREQUEL Agent · CME Reference Data · Prompt Catalog Mockup</div>
+    </div>
+    <div class="ih-right">
+      <span class="chip chip-ink">WO-HSU-02</span>
+      <span class="chip chip-teal">Phase 2 Primary</span>
+      <span class="chip chip-rule">Starts June 13</span>
+    </div>
+  </div>
+  <div class="icontent">
+
+    <div style="background:rgba(13,148,136,0.07);border-left:3px solid var(--teal);padding:12px 16px;margin-bottom:20px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Lambert — Role Assignment</div>
+      <div style="font-size:12px;line-height:1.65;color:rgba(10,12,15,0.7);">Lambert owns the <strong>Real Estate vertical</strong>: MRS MVP and PREQUEL Agent, both Phase 2. Before June 12, Lambert completes ETF prompts and MIXX ETF regime co-authorship with Zilin. Three additional Phase 2 assignments confirmed: <strong>(1) CME reference data upload</strong> co-authored with Zilin, <strong>(2) Micro Futures internal prompts</strong> with Zilin (post production-readiness gate), and <strong>(3) Prompt Catalog mockup</strong> with Jocelyn using Claude design artifacts — this is the reference spec the whole team builds against.</div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head cl-head-p1">PHASE 1 — Lambert's pre-June 12 obligations (limited)</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 3–7:</strong> Complete 3 ETF prompt entries for Prompt Catalog: SPY regime analysis · Sector rotation overlay · Volatility overlay. Format per Catalog schema. Deliver to Aras by Jun 7 for encryption.</div><div class="cl-due">Jun 7</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 5–8:</strong> Co-author MIXX regime classification rules with Zilin for ETF asset class. Deliver spec to Jocelyn. Classifications mirror Futures: DISTRIBUTION · ACCUMULATION · RANGE-BOUND · COMPRESSION · TRENDING. 1-page spec maximum.</div><div class="cl-due">Jun 8</div></div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head" style="background:var(--teal);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:6px 10px;">PHASE 2 WEEK 1 — June 13–16 · Start immediately after Demo Day</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 13:</strong> Prompt Catalog mockup with Jocelyn. Use Claude design artifacts to produce a reference UI mockup for the full Prompt Catalog — instrument family filtering, tier display, prompt card layout, VAULT archive status. This mockup becomes the spec the whole team builds against. Deliver shareable HTML artifact to Jim by Jun 16.</div><div class="cl-due">Jun 16</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 13–16:</strong> MRS lender database schema design with Anna. Deploy lender table: lender_id, lender_name, lender_type (wholesale/independent/NonQM), rate_sheet_url, ingestion_status, last_updated, optimal_blue_coverage (bool). Seed Big Four: UWM, Pennymac, Flagstar, AmeriHome.</div><div class="cl-due">Jun 16</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 16–20:</strong> MRS rate sheet ingestion prompts. Work with Aras on Upload Normalization Prompt. Adapt for lender rate sheet: extract rate, points, LTV tiers, overlay requirements, product type. Test with 2 real rate sheets.</div><div class="cl-due">Jun 20</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 16–20 (with Zilin — production-readiness gate):</strong> CME reference data upload. Product descriptions, contract specifications (tick size, margin, contract size, trading hours), rollover dates, CME Group full calendar. Zilin owns futures accuracy. Lambert structures and formats documents for VAULT upload. Requires VAULT Upload endpoint live (Jocelyn, target Jun 20).</div><div class="cl-due">Jun 20 ◆</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 16+ (with Zilin — production-readiness gate):</strong> Micro Futures internal prompts. Begin only after Jim confirms WATOS + VAULT + futures data services are production-ready. Internal use only — not subscriber-facing until Jim releases. Develop prompt set covering: Micro ES · Micro NQ · Micro Gold · Micro Crude daily setup and regime analysis.</div><div class="cl-due">Jun 27 ◆</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 18–24:</strong> WATOS-adapted MRS scoring model with Zilin. 5 factors for lender ranking: Rate Competitiveness · Overlay Alignment · Execution Reliability · Cost Efficiency · Product Coverage. Output: ranked lender list /99. Score archived to VAULT.</div><div class="cl-due">Jun 24</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text"><strong>Jun 20–27:</strong> PREQUEL Agent prep. VAULT Upload must be live before PREQUEL ingests property data. Once confirmed: write PREQUEL property normalization prompt. Test: subscriber uploads property CSV → Claude normalizes → VAULT archive → PREQUEL prompt applied. Jim's personal use case — highest priority.</div><div class="cl-due">Jun 27</div></div>
+      <div class="cl-item"><div class="cl-box gate"></div><div class="cl-text"><strong>Jun 30:</strong> Phase 2 gate. MRS MVP: lender ingestion working, WATOS scoring ranking lenders, VAULT archiving lender sessions. PREQUEL: one property CSV processed and analyzed. CME reference data live in VAULT. Prompt Catalog mockup delivered and accepted. Jim signs off.</div><div class="cl-due">Jun 30 🔴</div></div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-icon">Jun 30</div>
+      <div class="demo-content">
+        <div class="demo-lbl">Lambert — Phase 2 Deliverable (June 30)</div>
+        <div class="demo-title">MRS MVP · PREQUEL operational · CME reference live · Prompt Catalog mockup delivered</div>
+        <div class="demo-items">MRS: lender rate sheet ingested → WATOS-adapted ranking → VAULT archive · PREQUEL: property CSV → Claude analysis → VAULT · CME contract specs accessible in VAULT for any user prompt · Prompt Catalog mockup spec accepted by Jim and Jocelyn</div>
+      </div>
+    </div>
+
+    <table class="kv">
+      <tr><td>Reports to</td><td>Jim Marzano direct for MRS + PREQUEL + CME data</td></tr>
+      <tr><td>Prompt Catalog mockup</td><td>With Jocelyn, using Claude design artifacts — first Phase 2 week-one deliverable. Reference spec for the full team.</td></tr>
+      <tr><td>Production gate</td><td>Micro Futures prompts and CME upload require Jim's confirmation that WATOS + VAULT + futures data services are production-ready. Do not start before that confirmation.</td></tr>
+      <tr><td>PREQUEL rules</td><td>Processing Delegate doctrine: PREQUEL processes what principals bring, never independently acquires data. AON enrollment. MRED private listings excluded from IDX. These rules are fixed.</td></tr>
+      <tr><td>MRS pricing</td><td>$895/month terminal. Big Four wholesale lenders as Founding Data Contributors. Lambert's lender outreach begins June 13.</td></tr>
+    </table>
+  </div>
+</div>
+
+</div><!-- end intern-section -->
+
+<div class="doc-footer">
+  <div class="df-tm">
+    <strong>Metrixx LLC — WO Distribution v2 · Sprint June 12 · Phase 2 June 13–30 · © 2026 · Confidential</strong><br>
+    VAULT™ · WATOS™ trademarks of Metrixx LLC, Chicago IL · Do not forward outside the team
+  </div>
+  <div class="df-verb">12 days. Ship it.</div>
+</div>
+
+<script>
+function showIntern(name){
+  document.getElementById('cover-page').style.display='none';
+  document.getElementById('intern-section').style.display='block';
+  document.querySelectorAll('.ipanel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.itab').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('tab-'+name);
+  const tab=document.querySelector('.itab.'+name);
+  if(panel)panel.classList.add('active');
+  if(tab)tab.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showCover(){
+  document.getElementById('cover-page').style.display='flex';
+  document.getElementById('intern-section').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.ipanel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.itab').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('tab-'+name);
+  if(panel)panel.classList.add('active');
+  if(btn)btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
