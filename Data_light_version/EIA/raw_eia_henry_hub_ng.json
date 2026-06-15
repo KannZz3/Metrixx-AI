@@ -420,7 +420,7 @@
       ],
       "offset": 0,
       "length": 30,
-      "api_key": "LgCXrnMlTfUxj6yhcZzqZCmXLmC2dQLQtIqhO2jm"
+      "api_key": "<REDACTED_ENV_EIA_API_KEY>"
     },
     "route": "natural-gas/pri/fut"
   },

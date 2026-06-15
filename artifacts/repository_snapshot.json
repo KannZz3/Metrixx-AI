@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-15T20:48:19+00:00",
+  "generated_at_utc": "2026-06-15T21:12:56+00:00",
   "repository": "Metrixx-AI",
   "snapshot_scope": "checked-in public subset outputs only; no external fetches",
   "overall_ok": true,
@@ -92,13 +92,15 @@
       "exists": true,
       "ok_key": "all_required_ok",
       "ok": true,
-      "validated_at": "2026-06-15T20:43:15+00:00",
+      "validated_at": "2026-06-15T21:09:31+00:00",
       "record_count": 9,
-      "warning_count": 3,
+      "warning_count": 10,
       "warnings": [
         "Rows with STALE_PHYSICAL_* flags are calculated but should be reviewed before publication.",
         "ZS uses soybean meal as a related physical proxy, matching the existing repository sample logic.",
-        "GC and SI are emitted as futures-only rows because no physical basis leg is present in the current public subset."
+        "GC and SI are emitted as futures-only rows because no physical basis leg is present in the current public subset.",
+        "CL_WTI_CUSHING: physical leg is stale by 28 days.",
+        "NG_HENRY_HUB: physical leg is stale by 28 days."
       ]
     }
   ],
@@ -219,7 +221,7 @@
       "path": "Basis_sentiment/basis_sentiment_from_massive_cme.csv",
       "exists": true,
       "row_count": 9,
-      "column_count": 67,
+      "column_count": 69,
       "sample": {
         "trade_date": "2026-06-15",
         "instrument": "WTI_LIGHT_SWEET_CRUDE_OIL",
@@ -232,6 +234,210 @@
       }
     }
   ],
+  "fetcher_script_audit": {
+    "checked_at_utc": "2026-06-15T21:12:56+00:00",
+    "all_ok": true,
+    "script_count": 13,
+    "results": [
+      {
+        "path": "Data_light_version/EIA/eia_physical_price_fetcher.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/EIA/normalize_eia.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/USDA/usda_unified_fetcher_light_v4_commodity_split_fixed.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/USDA/usda_unified_fetcher_light_v2.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/USDA/usda_broad_search_corn_targets.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/CFTC/cftc_cot_fetcher_light_v5_field_quality_fixed.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/CFTC/cftc_cot_fetcher_light_v4_fixed.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "COT_scoring_positioning/cftc_cot_scoring_v1.2.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/CME/massive_cme_futures_fetcher.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/Reuters/_reuters_eia_narrative_light_v1_6.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/Reuters/narrative_ng_zc_zs.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Data_light_version/Baker Hughes/baker_hughes_rig_count_light_2026.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "path": "Basis_sentiment/build_basis_sentiment_from_cme.py",
+        "exists": true,
+        "ok": true,
+        "errors": []
+      }
+    ]
+  },
+  "secret_scan": {
+    "checked_at_utc": "2026-06-15T21:12:56+00:00",
+    "all_clear": true,
+    "finding_count": 0,
+    "findings": []
+  },
+  "basis_consistency_audit": {
+    "checked_at_utc": "2026-06-15T21:12:56+00:00",
+    "all_ok": true,
+    "record_count": 9,
+    "basis_ready_count": 7,
+    "errors": [],
+    "warnings": [
+      "CL_WTI_CUSHING: physical leg is stale by 28 days.",
+      "NG_HENRY_HUB: physical leg is stale by 28 days.",
+      "ZC_CORN_DECATUR_PROXY: physical leg is stale by 24 days.",
+      "ZC_CORN_GULF_PROXY: physical leg is stale by 24 days.",
+      "ZC_CORN_OK_FALLBACK: physical leg is stale by 24 days.",
+      "ZS_SOYBEAN_MEAL_RELATED_PROXY: physical leg is stale by 28 days.",
+      "ZW_SRW_WHEAT: physical leg is stale by 24 days."
+    ],
+    "row_results": [
+      {
+        "basis_label": "CL_WTI_CUSHING",
+        "symbol": "CL",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 28 days."
+        ]
+      },
+      {
+        "basis_label": "GC_FUTURES_ONLY",
+        "symbol": "GC",
+        "trade_date": "2026-06-15",
+        "basis_ready": false,
+        "ok": true,
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "basis_label": "NG_HENRY_HUB",
+        "symbol": "NG",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 28 days."
+        ]
+      },
+      {
+        "basis_label": "SI_FUTURES_ONLY",
+        "symbol": "SI",
+        "trade_date": "2026-06-12",
+        "basis_ready": false,
+        "ok": true,
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "basis_label": "ZC_CORN_DECATUR_PROXY",
+        "symbol": "ZC",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 24 days."
+        ]
+      },
+      {
+        "basis_label": "ZC_CORN_GULF_PROXY",
+        "symbol": "ZC",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 24 days."
+        ]
+      },
+      {
+        "basis_label": "ZC_CORN_OK_FALLBACK",
+        "symbol": "ZC",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 24 days."
+        ]
+      },
+      {
+        "basis_label": "ZS_SOYBEAN_MEAL_RELATED_PROXY",
+        "symbol": "ZS",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 28 days."
+        ]
+      },
+      {
+        "basis_label": "ZW_SRW_WHEAT",
+        "symbol": "ZW",
+        "trade_date": "2026-06-15",
+        "basis_ready": true,
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "physical leg is stale by 24 days."
+        ]
+      }
+    ]
+  },
   "catalog_version": "2026-06-16-minimal",
   "catalog_source_count": 11
 }

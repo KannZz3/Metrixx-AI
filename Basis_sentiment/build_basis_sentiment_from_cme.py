@@ -122,6 +122,8 @@ PREFERRED_CSV_FIELDS = [
     "basis_common_unit",
     "front_next_spread_common",
     "term_structure_signal",
+    "term_structure_trade_date",
+    "second_futures_contract",
     "volume",
     "transactions",
     "physical_component_role",
@@ -509,6 +511,16 @@ def basis_quality(trade_date: Any, physical_date: Any, max_lag_days: int) -> Tup
     return lag, "PHYSICAL_DATE_AFTER_FUTURES_REVIEW", "COMPLETE_WITH_DATE_ALIGNMENT_REVIEW"
 
 
+def term_structure_signal_from_spread(spread: Optional[float]) -> str:
+    if spread is None:
+        return "not_available"
+    if spread > 0:
+        return "contango"
+    if spread < 0:
+        return "backwardation"
+    return "flat"
+
+
 def build_row(
     symbol: str,
     future: Dict[str, Any],
@@ -521,6 +533,8 @@ def build_row(
 ) -> Dict[str, Any]:
     available = ["cme_futures_settlement"]
     missing = []
+    curve_trade_date = curve.get("trade_date") if curve else None
+    curve_aligned = bool(curve and curve_trade_date == future.get("trade_date"))
     row = {
         "trade_date": future.get("trade_date"),
         "symbol": symbol,
@@ -535,13 +549,17 @@ def build_row(
         "futures_settlement_common": future.get("settlement_common_unit_value"),
         "volume": future.get("volume"),
         "transactions": future.get("transactions"),
-        "front_next_spread_common": curve.get("front_next_spread_common") if curve else None,
-        "term_structure_signal": curve.get("term_structure_signal") if curve else None,
+        "front_next_spread_common": curve.get("front_next_spread_common") if curve_aligned else None,
+        "term_structure_signal": curve.get("term_structure_signal") if curve_aligned else None,
+        "term_structure_trade_date": curve_trade_date,
+        "second_futures_contract": curve.get("second_contract") if curve_aligned else None,
         "merged_at_utc": utc_now(),
     }
 
-    if curve and curve.get("front_next_spread_common") is not None:
+    if curve_aligned and curve.get("front_next_spread_common") is not None:
         available.append("term_structure")
+    elif curve and not curve_aligned:
+        missing.append("term_structure_date_alignment")
 
     if physical_source and mapping:
         physical = normalize_physical_fields(physical_source, mapping)
@@ -623,15 +641,90 @@ def build_row(
     return row
 
 
-def validate_output(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+def validate_output(rows: List[Dict[str, Any]], max_lag_days: int) -> Dict[str, Any]:
     basis_rows = [row for row in rows if row.get("basis_ready")]
     stale_rows = [row for row in rows if str(row.get("basis_quality_flag") or "").startswith("STALE_")]
     futures_only_rows = [row for row in rows if row.get("physical_component_role") == "NO_PHYSICAL_MAPPING_AVAILABLE"]
     errors = []
+    warnings = []
+    row_results = []
     if not rows:
         errors.append("No basis sentiment rows were generated.")
     if not basis_rows:
         errors.append("No basis-ready rows were generated.")
+
+    for row in rows:
+        label = row.get("basis_label")
+        row_errors = []
+        row_warnings = []
+        trade_date = row.get("trade_date")
+        if parse_dt(trade_date) is None:
+            row_errors.append("trade_date is missing or unparsable.")
+
+        spread = safe_float(row.get("front_next_spread_common"))
+        if spread is not None:
+            if row.get("term_structure_trade_date") != trade_date:
+                row_errors.append("term_structure_trade_date must equal trade_date when spread is populated.")
+            expected_signal = term_structure_signal_from_spread(spread)
+            if row.get("term_structure_signal") != expected_signal:
+                row_errors.append(f"term_structure_signal mismatch: expected {expected_signal}.")
+
+        if row.get("basis_ready"):
+            for field in ["physical_price_converted", "futures_settlement_converted", "basis_common_unit", "physical_price_asof_date"]:
+                if row.get(field) in (None, ""):
+                    row_errors.append(f"basis_ready row missing {field}.")
+            physical_value = safe_float(row.get("physical_price_converted"))
+            futures_value = safe_float(row.get("futures_settlement_converted"))
+            basis_value = safe_float(row.get("basis_value_asof"))
+            if physical_value is not None and futures_value is not None and basis_value is not None:
+                expected_basis = round(physical_value - futures_value, 6)
+                if abs(expected_basis - basis_value) > 1e-6:
+                    row_errors.append(f"basis_value_asof mismatch: expected {expected_basis}, got {basis_value}.")
+
+            lag = day_diff(trade_date, row.get("physical_price_asof_date"))
+            if lag != row.get("physical_lag_days"):
+                row_errors.append(f"physical_lag_days mismatch: expected {lag}, got {row.get('physical_lag_days')}.")
+            if lag is not None and lag < 0:
+                row_errors.append("physical_price_asof_date is after futures trade_date.")
+            if lag is not None and lag > max_lag_days:
+                row_warnings.append(f"physical leg is stale by {lag} days.")
+            if row.get("basis_formula_asof") != "physical_price_asof - front_month_futures_settlement":
+                row_errors.append("basis_formula_asof is not the expected physical-minus-futures formula.")
+        else:
+            if row.get("basis_value_asof") is not None:
+                row_errors.append("non-basis-ready row should not carry basis_value_asof.")
+
+        if row.get("cot_report_date"):
+            cot_lag = day_diff(trade_date, row.get("cot_report_date"))
+            if cot_lag != row.get("cot_lag_days"):
+                row_errors.append(f"cot_lag_days mismatch: expected {cot_lag}, got {row.get('cot_lag_days')}.")
+            if cot_lag is not None and cot_lag < 0:
+                row_errors.append("cot_report_date is after futures trade_date.")
+
+        if row.get("narrative_latest_event_timestamp"):
+            narrative_lag = day_diff(trade_date, row.get("narrative_latest_event_timestamp"))
+            if narrative_lag != row.get("narrative_lag_days"):
+                row_errors.append(f"narrative_lag_days mismatch: expected {narrative_lag}, got {row.get('narrative_lag_days')}.")
+            if narrative_lag is not None and narrative_lag < 0:
+                row_errors.append("narrative_latest_event_timestamp is after futures trade_date.")
+
+        row_results.append(
+            {
+                "basis_label": label,
+                "symbol": row.get("symbol"),
+                "trade_date": trade_date,
+                "physical_price_asof_date": row.get("physical_price_asof_date"),
+                "physical_lag_days": row.get("physical_lag_days"),
+                "term_structure_trade_date": row.get("term_structure_trade_date"),
+                "basis_ready": row.get("basis_ready"),
+                "ok": not row_errors,
+                "errors": row_errors,
+                "warnings": row_warnings,
+            }
+        )
+        errors.extend([f"{label}: {error}" for error in row_errors])
+        warnings.extend([f"{label}: {warning}" for warning in row_warnings])
+
     return {
         "validated_at": utc_now(),
         "stage": "basis_sentiment_from_massive_cme",
@@ -643,11 +736,12 @@ def validate_output(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "symbols": sorted({row.get("symbol") for row in rows if row.get("symbol")}),
         "basis_labels": [row.get("basis_label") for row in rows],
         "errors": errors,
+        "row_alignment_results": row_results,
         "warnings": [
             "Rows with STALE_PHYSICAL_* flags are calculated but should be reviewed before publication.",
             "ZS uses soybean meal as a related physical proxy, matching the existing repository sample logic.",
             "GC and SI are emitted as futures-only rows because no physical basis leg is present in the current public subset.",
-        ],
+        ] + warnings,
     }
 
 
@@ -713,7 +807,7 @@ def main() -> int:
         "stage": "futures_physical_cot_narrative_merge",
         "records": rows,
     }
-    validation = validate_output(rows)
+    validation = validate_output(rows, args.max_accepted_physical_lag_days)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     save_json(args.out_dir / "basis_sentiment_from_massive_cme.json", payload)
     write_csv(args.out_dir / "basis_sentiment_from_massive_cme.csv", rows)

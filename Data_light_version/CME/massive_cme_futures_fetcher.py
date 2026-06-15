@@ -407,6 +407,12 @@ def validate_records(
             errors.append("No front-month aggregate rows normalized.")
         if any(row.get("settlement_common_unit_value") is None for row in front_rows):
             errors.append("Front-month rows contain no settlement/common value.")
+        latest_symbol_trade_date = latest_trade_date(rows, symbol)
+        if latest_symbol_trade_date and latest_front_trade_date and latest_symbol_trade_date != latest_front_trade_date:
+            warnings.append(
+                "Latest symbol trade date has no front-month row; downstream basis should use "
+                f"latest_front_trade_date={latest_front_trade_date}, not latest_trade_date={latest_symbol_trade_date}."
+            )
         ok = not errors
         all_ok = all_ok and ok
         group_results.append(
@@ -415,7 +421,7 @@ def validate_records(
                 "ok": ok,
                 "record_count": len(rows),
                 "front_record_count": len(front_rows),
-                "latest_trade_date": latest_trade_date(rows, symbol),
+                "latest_trade_date": latest_symbol_trade_date,
                 "latest_front_trade_date": latest_front_trade_date,
                 "front_contract": front_rows[-1].get("futures_contract") if front_rows else None,
                 "contract_as_of_date": per_symbol.get(symbol, {}).get("contract_as_of_date"),

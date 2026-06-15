@@ -387,6 +387,20 @@ def save_json(path: Path, payload: Any) -> None:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
+def redact_sensitive_payload(value: Any) -> Any:
+    if isinstance(value, dict):
+        redacted: Dict[str, Any] = {}
+        for key, item in value.items():
+            if str(key).lower() in {"api_key", "apikey", "api-key"}:
+                redacted[key] = "<REDACTED_ENV_EIA_API_KEY>"
+            else:
+                redacted[key] = redact_sensitive_payload(item)
+        return redacted
+    if isinstance(value, list):
+        return [redact_sensitive_payload(item) for item in value]
+    return value
+
+
 # -----------------------------------------------------------------------------
 # 7. CLI entrypoint
 # -----------------------------------------------------------------------------
@@ -461,7 +475,7 @@ def main() -> int:
                 length=args.length,
                 max_retries=args.max_retries,
             )
-            save_json(raw_dir / f"raw_eia_{series_key.lower()}.json", raw_payload)
+            save_json(raw_dir / f"raw_eia_{series_key.lower()}.json", redact_sensitive_payload(raw_payload))
 
             observations = parse_eia_seriesid_payload(raw_payload)
             validation = validate_observations(series_key, meta, observations)
