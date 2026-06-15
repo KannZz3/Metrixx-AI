@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+Data_light_version/CME/raw_massive_cme_futures.json
