@@ -1,204 +1,110 @@
-# Metrixx-AI
+# Metrixx-AI (MXXI)
 
-This repository documents selected components of a futures market intelligence research and development project I contributed to at **Metrixx AI**, focusing on futures data analysis, market structure research, and trading signal framework development for the MY DESK market intelligence platform.
+[![Bilingual](https://img.shields.io/badge/Language-English%20%2F%20%E4%B8%AD%E6%96%87-blue.svg)](#)
+[![Status](https://img.shields.io/badge/Status-MXXI%20Intern%20Initiative-orange.svg)](#)
+[![Server](https://img.shields.io/badge/Server-illini.metrixx.ai-purple.svg)](#)
 
-本仓库记录了我在 **Metrixx AI** 参与的商品期货市场情报研发项目的部分内容，重点包括期货数据分析、市场结构研究，以及面向 MY DESK 市场情报平台的交易信号框架开发。
-
----
-
-## Project Overview  
-## 项目概览
-
-This documented work focuses on transforming futures, physical commodity, positioning, and intraday market-structure data into structured market intelligence. The core work centers on data-driven futures analysis, basis sentiment interpretation, order-flow behavior, and market structure signal construction.
-
-本仓库记录的工作主要围绕将期货价格、现货商品、持仓结构以及日内市场结构数据转化为结构化市场情报。核心内容包括数据驱动的期货分析、基差情绪解读、订单流行为分析以及市场结构信号构建。
-
-The work emphasizes the analytical layer behind market intelligence generation: identifying actionable trading signals, defining market structure logic, validating commodity data inputs, and converting futures-market observations into standardized intelligence outputs.
-
-相关工作重点在于构建市场情报背后的分析层：识别可操作的交易信号，定义市场结构逻辑，验证商品数据输入，并将期货市场观察转化为标准化情报输出。
+> **Important Note / 重要说明:**  
+> This repository documents selected data ingestion microservices, prompt schemas, and architecture guidelines built for the **MXXI Intern Server Initiative (METRIXX-ILLINI)** running at `illini.metrixx.ai`. It represents a selected, isolated development subset of the overall platform. The full production-grade subscriber platform, proprietary databases, and core backend pipelines remain confidential and isolated.  
+> 
+> 本仓库仅包含为 **MXXI 研发服务器 (METRIXX-ILLINI, 部署于 `illini.metrixx.ai`)** 开发的特定数据接入微服务、提示词架构和开发规范。本仓库仅展示了整个项目中的一部分隔离开发模块。完整的生产级用户平台、专属数据库以及核心后台系统均保持高度保密与隔离。
 
 ---
 
-## Core Areas  
-## 核心方向
+## 1. Project Overview / 项目概览
 
-- Futures market structure analysis  
-  期货市场结构分析
+**Metrixx-AI** serves as the core data intelligence and semantic generation layer for the **MY DESK** market intelligence platform (running at `chat.metrixx.ai`). 
 
-- Intraday order-flow and volume behavior  
-  日内订单流与成交量行为分析
+The system processes physical cash bids, CME futures settlements, CFTC commitments of traders (COT) positioning, and news narrative sentiment into structured intelligence. It supports three subscriber-facing output formats:
+1. **Short Form** (📄): ≤ 50-character ticker alerts or WATOS™ tags.
+2. **Long Form** (📝): ≤ 50-word narrative briefs with supporting data context.
+3. **Excel/VAULT** (📊): Watermarked `.xlsx` workbooks archived directly to the **VAULT** persistent library.
 
-- Market Profile / auction-market interpretation  
-  Market Profile 与拍卖市场逻辑解读
+**Metrixx-AI** 构成了面向 **MY DESK** 市场情报平台的核心数据智能与语义生成层。
 
-- VWAP, breakout acceptance, absorption, and failed breakout logic  
-  VWAP、突破接受、吸收盘与假突破逻辑
-
-- Candlestick reversal and continuation signal design  
-  K 线反转与延续信号设计
-
-- Commodity basis and physical-vs-futures spread analysis  
-  商品基差与现货-期货价差分析
-
-- CFTC COT positioning interpretation  
-  CFTC COT 持仓结构解读
-
-- EIA, USDA, CME settlement, and macro data validation  
-  EIA、USDA、CME 结算价与宏观数据验证
-
-- Reuters / EIA narrative event-flag generation  
-  Reuters / EIA 市场叙事事件标记生成
-
-- MY DESK market intelligence workflow support  
-  MY DESK 市场情报工作流支持
+系统将现货商品价格、CME 期货结算价、CFTC COT 持仓结构以及新闻叙事情绪整合为结构化情报。它原生支持三种订阅用户端输出格式：
+1. **短线警报** (📄): ≤ 50 字符的滚动警报或 WATOS™ 评分标签。
+2. **长线简报** (📝): ≤ 50 单词的深度基本面/筹码面量化简报。
+3. **Excel/VAULT** (📊): 包含订阅用户水印和法律免责声明的标准化 `.xlsx` 工作簿，自动归档至 **VAULT** 永久库。
 
 ---
 
-## Current Work  
-## 当前工作
+## 2. Ingestion Microservices / 数据接入微服务
 
-Current work includes the development and documentation of trading signal frameworks for:
+Ingestion modules run as modular Python microservices located under `Data_light_version/`:
 
-当前工作包括以下交易信号框架的设计与文档化：
+* **EIA Energy Spot Prices** ([normalize_eia.py](Data_light_version/EIA/normalize_eia.py)): Daily Cushing spot prices for Crude (WTI/Brent), Gas (Henry Hub), LA RBOB, NYH Heating Oil, and USGC Jet Fuel.
+* **USDA AMS Grain Bids** ([usda_unified_fetcher](Data_light_version/USDA/usda_unified_fetcher_light_v4_commodity_split_fixed.py)): Cash bids for Corn, Soybean Meal, and Wheat. Employs Illinois elevator bids (`slug 3192`) and Barge terminal bids (`slug 3043`) as proxies for Decatur and Gulf Corn.
+* **CFTC COT Scoring** ([cftc_cot_scoring_v1.2.py](COT_scoring_positioning/cftc_cot_scoring_v1.2.py)): Weekly Disaggregated Managed Money crowding, Producer/Merchant pressure, and Positioning Impulse metrics with a field-quality audit (v5) and legacy COT confirmation gate.
+* **Reuters & USDA RSS Narrative** ([_reuters_eia_narrative_light_v1_6.py](Data_light_version/Reuters/_reuters_eia_narrative_light_v1_6.py)): Headline/snippet event categorization (e.g. `INVENTORY_DRAW`, `SUPPLY_DISRUPTION`) and directional sentiment matching using Google News/USDA RSS proxies to maintain strict TOS compliance.
+* **Baker Hughes Rig Count** ([rig_count_parser](Data_light_version/Baker%20Hughes/baker_hughes_rig_count_light_2026.py)): Weekly Rotary Rig counts. A drop of **≥ 10 WoW** triggers an `energy_scarcity_trigger` (bullish supply bias).
 
-- **Hanging Man reversal risk**  
-  **Hanging Man 吊人线反转风险**
-
-- **Volume spike impact and breakout validation**  
-  **成交量异常放大影响与突破验证**
-
-- **VWAP-based institutional benchmark behavior**  
-  **基于 VWAP 的机构基准行为分析**
-
-- **Breakout acceptance / rejection**  
-  **突破接受 / 拒绝判断**
-
-- **Absorption and failed auction conditions**  
-  **吸收盘与失败拍卖条件**
-
-- **Basis sentiment and commodity positioning analysis**  
-  **基差情绪与商品持仓结构分析**
-
-- **Reuters / EIA narrative sentiment event flags**  
-  **Reuters / EIA 市场叙事情绪事件标记**
-
-These frameworks are designed to support concise market intelligence outputs inside the MY DESK platform.
-
-这些框架旨在支持 MY DESK 平台内简洁、标准化的市场情报输出。
+数据接入模块均作为容器化的 Python 微服务运行于 `Data_light_version/` 目录下：
+* **EIA 能源现货价格**: 抓取 WTI、布伦特、亨利枢纽天然气、LA RBOB、NYH 取暖油及美湾航煤的每日 Cushing 现货价格。
+* **USDA AMS 谷物价格**: 抓取玉米、豆粕以及小麦现货买标。使用伊利诺伊电梯（`slug 3192`）及驳船码头（`slug 3043`）价格作为迪凯特与美湾玉米现货的代理指标（Proxy）。
+* **CFTC COT 持仓打分**: 抓取每周持仓数据。通过基金拥挤度、商业套保压力及持仓冲量计算综合得分，具备字段质量审计（v5）及历史持仓确认机制。
+* **路透/USDA 叙事分类**: 通过谷歌新闻与 USDA RSS 代理服务器抓取新闻片段，在确保合规的前提下进行事件归类（如库存减少、供应中断等）与情绪识别。
+* **贝克休斯钻井统计**: 自动监控每周旋转钻井总数，当单周降幅达 **10口及以上** 时触发“能源稀缺警报”（看涨供应短缺）。
 
 ---
 
-## Basis Sentiment Service  
-## 基差情绪服务
+## 3. Analytics & Prompt Catalog / 分析矩阵与提示词目录
 
-A selected component of this work supports the **BASIS SENTIMENT SERVICE**, which combines physical commodity data, futures settlement prices, COT positioning, and commodity news context into structured market intelligence.
+The **Prompt Catalog v2.0** (Rev 8) defines the platform's analytical catalog:
+* **WATOS™ Composite Score**: Integrates: (1) Directional probability, (2) Options GEX weight, and (3) MIXX regime confidence. Employs the naming format: `WATOS_{SUBSCRIBER_ID}_{UNDERLYING}_{STRATEGY_CODE}_{YYYYMMDD}_{SESSION}.xlsx`.
+* **Gamma Playbook (GP)**: Evaluates dealer GEX, Put/Call Walls, net gamma, and weekly pin risk (SPX, QQQ, NVDA, TSLA, BTC).
+* **0DTE Options Strategy**: Same-day expiry setups overlaid with Market Profile POC and high-volume nodes (HVN).
+* **Market Profile & Order Flow**: Value Area (VAH/VAL/POC) auction theory, day type, and footprint delta divergence.
 
-本仓库记录的部分工作支持 **BASIS SENTIMENT SERVICE（基差情绪服务）**，该服务将现货商品数据、期货结算价、COT 持仓数据以及商品市场新闻背景整合为结构化市场情报。
-
-Relevant data components include:
-
-相关数据组件包括：
-
-- EIA energy spot and inventory-related data  
-  EIA 能源现货与库存相关数据
-
-- USDA agricultural cash market data  
-  USDA 农产品现货市场数据
-
-- CFTC COT positioning data  
-  CFTC COT 持仓数据
-
-- CME / NYMEX / CBOT futures settlement data  
-  CME / NYMEX / CBOT 期货结算价数据
-
-- FRED macro overlays  
-  FRED 宏观经济辅助数据
-
-- Commodity event and narrative signals  
-  商品事件与市场叙事信号
-
-The Basis Sentiment Service also includes a Reuters / EIA narrative sentiment pipeline for event-flag generation. Using Reuters Commodities RSS and EIA Today in Energy at the headline / snippet level only, the pipeline detects commodity tags, directional bias, and confidence scores before sending paraphrased signals to the Claude preprocessing layer.
-
-基差情绪服务还包括 Reuters / EIA 市场叙事情绪管线，用于生成商品事件标记。该模块仅使用 Reuters Commodities RSS 与 EIA Today in Energy 的 headline / snippet 信息，识别商品标签、方向性影响与置信度评分，并将改写后的信号传递至 Claude 预处理层。
-
-Reuters RSS is treated as review-only: event flagging and paraphrase only, with no full-article copying, no direct reuse of Reuters text, and no Reuters original content in subscriber-facing outputs.
-
-Reuters RSS 按 review-only 方式处理：仅用于事件标记与改写，不复制全文，不直接复用 Reuters 原文，也不将 Reuters 原文放入面向订阅用户的输出。
-
-The objective is to support a production-style pipeline where normalized market data can be used for basis analysis, sentiment interpretation, and subscriber-facing commodity intelligence.
-
-该模块的目标是支持一个接近生产环境的数据管线，使标准化后的市场数据可用于基差分析、情绪解读，以及面向订阅用户的商品市场情报输出。
+**Prompt Catalog v2.0 (Rev 8)** 规范了平台的提示词与分析矩阵：
+* **WATOS™ 综合评分**: 整合：(1) 方向性概率, (2) 期权 GEX 敞口权重, 以及 (3) MIXX 波动率体制置信度。采用命名规范：`WATOS_{SUBSCRIBER_ID}_{UNDERLYING}_{STRATEGY_CODE}_{YYYYMMDD}_{SESSION}.xlsx`。
+* **Gamma 策略手册 (GP)**: 评估期权做市商 GEX、行权墙、净 Gamma 敞口及到期钉住风险。
+* **0DTE 日内期权策略**: 提供 0DTE 日内开盘/破位交易，强制关联 Market Profile 控制点 (POC) 与高筹码区 (HVN)。
+* **Market Profile 与订单流**: 提供基于拍卖市场理论的价值区间 (VAH/VAL/POC) 研判、日内行情类型分类及足迹图 Delta 背离分析。
 
 ---
 
-## Methodology  
-## 方法论
+## 4. Gatekeeper & TOS Compliance / 数据准入与合规矩阵
 
-This documented work combines futures trading domain knowledge with structured data interpretation. Key concepts include:
+All sources are monitored via a master `catalog.json` compliance log:
+* **GO (Cleared)**: EIA API, USDA AMS, CFTC, FRED, Baker Hughes. Full ingestion allowed.
+* **GO (Internal Only)**: CME Daily Settlements. Valid for internal analytics only.
+* **REVIEW (Paraphrase Only)**: Reuters RSS, ICIS. Snippet/headline event detection only; no full article body is stored.
+* **HOLD (Blocked)**: Barchart cmdtyView, S&P Global Platts. Pending licensing.
+* **RED (Hard Blocked)**: Argus Media. Assessed prices are strictly prohibited due to explicit AI ingestion limits.
 
-本仓库记录的工作结合期货交易领域知识与结构化数据解读方法，核心概念包括：
-
-- Price acceptance vs. rejection  
-  价格接受与价格拒绝
-
-- Volume expansion and price response  
-  成交量扩张与价格反应
-
-- VWAP hold / reclaim behavior  
-  VWAP 持稳与重新站上行为
-
-- POC, VAH, VAL, HVN, and LVN interaction  
-  POC、VAH、VAL、HVN 与 LVN 关键位置互动
-
-- Auction imbalance and failed breakout behavior  
-  拍卖失衡与失败突破行为
-
-- COT positioning pressure and commercial / managed money flow  
-  COT 持仓压力与商业交易者 / 管理基金资金流向
-
-- Basis movement between physical and futures markets  
-  现货与期货市场之间的基差变化
-
-- News-driven event flagging and paraphrased narrative signals  
-  新闻事件驱动的事件标记与改写型市场叙事信号
+所有集成的数据源均通过 `catalog.json` 准入清单进行严格合规审查：
+* **GO (放行)**: EIA、USDA AMS、CFTC、FRED、贝克休斯。完全放行。
+* **GO (仅限内部)**: CME 每日结算价。仅适用于内部计算分析，限制分发。
+* **REVIEW (限改写)**: 路透社 RSS、ICIS。仅支持抓取标题/片段用于事件标记，禁止复制正文。
+* **HOLD (暂停)**: Barchart cmdtyView、标普全球普氏。等待商业合同或 AI 授权协议签署。
+* **RED (禁止)**: 阿格斯媒体。因明确禁止 AI 摄取，严禁导入其评估价格。
 
 ---
 
-## Planned Updates  
-## 后续计划
+## 5. Architecture Standards / 接口与开发规范
 
-This repository will continue to be updated as the documented work progresses. Future additions may include:
+The codebase adheres to a strict **downward dependency clean architecture** (see [adding-polygon-provider.md](Data_backend/adding-polygon-provider.md)):
+1. **Adapter Isolation**: Provider-specific shapes are sealed in adapter classes (extending `BaseAdapter`). Upstream services remain completely provider-agnostic.
+2. **Capability Interfaces**: Services narrow adapter interfaces dynamically via type-guards (e.g. `supportsOptions(adapter)`) rather than checking provider names.
 
-本仓库将随着相关工作推进持续更新，后续可能加入以下内容：
-
-- Additional futures market signal frameworks  
-  更多期货市场信号框架
-
-- Basis Sentiment Service documentation  
-  基差情绪服务文档
-
-- Reuters / EIA narrative sentiment pipeline notes  
-  Reuters / EIA 市场叙事情绪管线说明
-
-- COT scoring and positioning interpretation notes  
-  COT 打分与持仓解读笔记
-
-- Commodity basis and spread analysis examples  
-  商品基差与价差分析案例
-
-- Market Profile / ROOTS methodology notes  
-  Market Profile / ROOTS 方法论笔记
-
-- Data source validation notes  
-  数据源验证说明
-
-- Sample structured market intelligence outputs  
-  结构化市场情报输出样例
+本仓库的开发遵循**下向依赖清洁架构**（详见 [adding-polygon-provider.md](Data_backend/adding-polygon-provider.md)）：
+1. **数据源适配器隔离**: 提供商特定的参数、认证及解析完全隔离在继承自 `BaseAdapter` 的适配器中，服务层完全独立。
+2. **能力 Narrowing 机制**: 严禁在服务层通过名称进行硬编码分支。若提供商支持附加能力，通过类型守卫（如 `supportsOptions`）在运行时进行动态收窄。
 
 ---
 
-## Disclaimer  
-## 免责声明
+## 6. Timeline & Milestones / 时间线与阶段目标
+
+* **Phase 1 (Demo Day - June 12, 2026)**: Core futures prompts, Gamma Playbook alerts, and ingestion microservices operational on METRIXX-ILLINI.
+* **Phase 2 (June 25, 2026)**: MIXX Composite Index, Futures Basis Synthesis, Macro/Rates models, and Mortgage Reference Service (MRS) integrations.
+
+* **阶段 1 (演示日 - 2026 年 6 月 12 日)**: 核心期货提示词、做市商 GEX 警报系统及基础数据接入微服务在 METRIXX-ILLINI 投入运行。
+* **阶段 2 (2026 年 6 月 25 日)**: 部署 MIXX 综合指数、期货基差合成报告、宏观利率模型及房地产 MRS 垂直服务集成。
+
+---
+
+## 7. Disclaimer / 免责声明
 
 This repository is for educational and research documentation purposes only. It does not constitute investment advice, trading advice, or a recommendation to buy or sell any financial instrument.
 
