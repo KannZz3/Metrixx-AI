@@ -1,0 +1,109 @@
+{
+  "validated_at": "2026-06-15T20:44:27+00:00",
+  "stage": "massive_cme_futures_fetch_normalize",
+  "all_required_ok": true,
+  "record_count": 104,
+  "target_symbols": [
+    "CL",
+    "NG",
+    "ZC",
+    "ZS",
+    "ZW",
+    "GC",
+    "SI"
+  ],
+  "source_id": "MASSIVE_CME_FUTURES_SESSION",
+  "tos_status": "GO_INTERNAL_ANALYTICS",
+  "validation_rules": [
+    "At least one active single contract per target.",
+    "At least one 1-session aggregate bar per target.",
+    "Front-month rows must have settlement_price or close fallback.",
+    "Grain futures are converted from cents per bushel to USD_PER_BUSHEL."
+  ],
+  "group_results": [
+    {
+      "symbol": "CL",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "CLN6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "NG",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "NGN26",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "ZC",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "ZCN6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "ZS",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "ZSN6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "ZW",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "ZWN6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "GC",
+      "ok": true,
+      "record_count": 15,
+      "front_record_count": 5,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-15",
+      "front_contract": "GCM6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "symbol": "SI",
+      "ok": true,
+      "record_count": 14,
+      "front_record_count": 4,
+      "latest_trade_date": "2026-06-15",
+      "latest_front_trade_date": "2026-06-12",
+      "front_contract": "SIM6",
+      "contract_as_of_date": "2026-06-15",
+      "warnings": [],
+      "errors": []
+    }
+  ]
+}

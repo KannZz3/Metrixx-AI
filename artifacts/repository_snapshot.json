@@ -1,0 +1,237 @@
+{
+  "generated_at_utc": "2026-06-15T20:48:19+00:00",
+  "repository": "Metrixx-AI",
+  "snapshot_scope": "checked-in public subset outputs only; no external fetches",
+  "overall_ok": true,
+  "validation_reports": [
+    {
+      "stage": "eia_energy_physical_prices",
+      "path": "Data_light_version/EIA/eia_normalization_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "normalized_at": "2026-05-25T01:44:52+00:00",
+      "total_normalized_records": 180
+    },
+    {
+      "stage": "usda_grain_physical_prices",
+      "path": "Data_light_version/USDA/usda_grain_physical_prices_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-05-25T05:19:21+00:00",
+      "total_records": 180
+    },
+    {
+      "stage": "cftc_cot_positioning",
+      "path": "Data_light_version/CFTC/cftc_cot_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-05-25T19:58:37+00:00",
+      "total_records": 2184
+    },
+    {
+      "stage": "cftc_cot_scoring",
+      "path": "COT_scoring_positioning/cftc_cot_scoring_validation_report.json",
+      "exists": true,
+      "ok_key": "all_scoring_valid",
+      "ok": true,
+      "validated_at": "2026-05-25T20:10:02+00:00",
+      "total_score_records": 1092
+    },
+    {
+      "stage": "reuters_eia_narrative",
+      "path": "Data_light_version/Reuters/narrative_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-05-26T21:47:54+00:00",
+      "record_count": 57,
+      "warning_count": 10,
+      "warnings": [
+        "Reuters default feed is a Google News Reuters commodities proxy, not official Reuters RSS. Use --reuters-feed for official Reuters RSS if available.",
+        "Target CL has 10 normalized events within lookback, below target minimum 30. Kept all available real records; no backfill/duplication; pipeline continues.",
+        "Target NG has 22 normalized events within lookback, below target minimum 30. Kept all available real records; no backfill/duplication; pipeline continues.",
+        "Target HO has 1 normalized events within lookback, below target minimum 30. Kept all available real records; no backfill/duplication; pipeline continues.",
+        "Target RB has 3 normalized events within lookback, below target minimum 30. Kept all available real records; no backfill/duplication; pipeline continues."
+      ]
+    },
+    {
+      "stage": "baker_hughes_rig_count",
+      "path": "Data_light_version/Baker Hughes/baker_hughes_rig_count_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-05-25T21:16:27+00:00",
+      "record_count": 125,
+      "latest_date": "2026-05-22",
+      "earliest_date": "2024-01-05"
+    },
+    {
+      "stage": "fred_macro_overlay",
+      "path": "Data_light_version/FRED/fred_macro_overlay_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-05-26T16:30:37+00:00",
+      "record_count": 3194
+    },
+    {
+      "stage": "massive_cme_futures",
+      "path": "Data_light_version/CME/massive_cme_futures_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-06-15T20:44:27+00:00",
+      "record_count": 104
+    },
+    {
+      "stage": "basis_sentiment_from_massive_cme",
+      "path": "Basis_sentiment/basis_sentiment_from_massive_cme_validation_report.json",
+      "exists": true,
+      "ok_key": "all_required_ok",
+      "ok": true,
+      "validated_at": "2026-06-15T20:43:15+00:00",
+      "record_count": 9,
+      "warning_count": 3,
+      "warnings": [
+        "Rows with STALE_PHYSICAL_* flags are calculated but should be reviewed before publication.",
+        "ZS uses soybean meal as a related physical proxy, matching the existing repository sample logic.",
+        "GC and SI are emitted as futures-only rows because no physical basis leg is present in the current public subset."
+      ]
+    }
+  ],
+  "csv_outputs": [
+    {
+      "path": "Data_light_version/USDA/usda_grain_physical_prices_normalized.csv",
+      "exists": true,
+      "row_count": 180,
+      "column_count": 43,
+      "sample": {
+        "source_id": "USDA_AMS_CORN_OK_COUNTRY_ELEVATOR_BID",
+        "instrument": "CORN",
+        "series_key": "CORN_COUNTRY_ELEVATOR_OK_FALLBACK",
+        "timestamp": "05/19/2026",
+        "value": "4.7525"
+      }
+    },
+    {
+      "path": "Data_light_version/CFTC/cftc_cot_positioning_normalized.csv",
+      "exists": true,
+      "row_count": 2184,
+      "column_count": 52,
+      "sample": {
+        "source_id": "CFTC_DISAGG_FUTURES_ONLY",
+        "instrument": "CL",
+        "report_date": "2023-05-30"
+      }
+    },
+    {
+      "path": "COT_scoring_positioning/cftc_cot_scores.csv",
+      "exists": true,
+      "row_count": 1092,
+      "column_count": 54,
+      "sample": {
+        "source_id": "CFTC_COT_SCORING_V1_2",
+        "instrument": "CL",
+        "report_date": "2023-05-30",
+        "cot_score": "-1.0",
+        "cot_signal": "mildly_bearish"
+      }
+    },
+    {
+      "path": "Data_light_version/Reuters/narrative_events_normalized.csv",
+      "exists": true,
+      "row_count": 57,
+      "column_count": 36,
+      "sample": {
+        "source_id": "EIA_TODAY_IN_ENERGY_RSS",
+        "target_commodity": "NG",
+        "timestamp": "2026-05-26T14:00:00+00:00"
+      }
+    },
+    {
+      "path": "Data_light_version/Baker Hughes/baker_hughes_rig_count_normalized.csv",
+      "exists": true,
+      "row_count": 125,
+      "column_count": 30,
+      "sample": {
+        "source_id": "BAKER_HUGHES_RIG_COUNT_WEEKLY",
+        "instrument": "US_RIG_COUNT",
+        "timestamp": "2024-01-05"
+      }
+    },
+    {
+      "path": "Data_light_version/FRED/fred_macro_overlay_normalized.csv",
+      "exists": true,
+      "row_count": 3194,
+      "column_count": 25,
+      "sample": {
+        "source_id": "FRED_CPIAUCSL_MONTHLY",
+        "instrument": "CPI_ALL_URBAN_CONSUMERS",
+        "timestamp": "2021-05-01",
+        "value": "268.383"
+      }
+    },
+    {
+      "path": "Data_light_version/CME/massive_cme_futures_normalized.csv",
+      "exists": true,
+      "row_count": 104,
+      "column_count": 34,
+      "sample": {
+        "source_id": "MASSIVE_CME_FUTURES_SESSION",
+        "trade_date": "2026-06-09",
+        "instrument": "WTI_LIGHT_SWEET_CRUDE_OIL",
+        "symbol": "CL",
+        "futures_contract": "CLN6"
+      }
+    },
+    {
+      "path": "Basis_sentiment/accepted_cl_2026-05-26.csv",
+      "exists": true,
+      "row_count": 21,
+      "column_count": 109,
+      "sample": {
+        "trade_date": "2026-05-26",
+        "instrument": "CL",
+        "symbol": "CL",
+        "futures_contract": "CLN26",
+        "cot_score": "0.5802",
+        "basis_ready": "true"
+      }
+    },
+    {
+      "path": "Basis_sentiment/ng_zc_zs_2026-05-28.csv",
+      "exists": true,
+      "row_count": 3,
+      "column_count": 116,
+      "sample": {
+        "source_id": "CME_NG_DAILY_SETTLEMENT",
+        "trade_date": "2026-05-28",
+        "instrument": "HENRY_HUB_NATURAL_GAS",
+        "symbol": "NG",
+        "futures_contract": "NGN26",
+        "basis_ready": "True"
+      }
+    },
+    {
+      "path": "Basis_sentiment/basis_sentiment_from_massive_cme.csv",
+      "exists": true,
+      "row_count": 9,
+      "column_count": 67,
+      "sample": {
+        "trade_date": "2026-06-15",
+        "instrument": "WTI_LIGHT_SWEET_CRUDE_OIL",
+        "symbol": "CL",
+        "basis_label": "CL_WTI_CUSHING",
+        "futures_contract": "CLN6",
+        "cot_score": "4.0",
+        "cot_signal": "bullish_positioning",
+        "basis_ready": "True"
+      }
+    }
+  ],
+  "catalog_version": "2026-06-16-minimal",
+  "catalog_source_count": 11
+}

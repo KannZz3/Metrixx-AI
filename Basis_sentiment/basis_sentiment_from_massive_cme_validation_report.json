@@ -1,0 +1,35 @@
+{
+  "validated_at": "2026-06-15T20:43:15+00:00",
+  "stage": "basis_sentiment_from_massive_cme",
+  "all_required_ok": true,
+  "record_count": 9,
+  "basis_ready_count": 7,
+  "stale_physical_review_count": 7,
+  "futures_only_count": 2,
+  "symbols": [
+    "CL",
+    "GC",
+    "NG",
+    "SI",
+    "ZC",
+    "ZS",
+    "ZW"
+  ],
+  "basis_labels": [
+    "CL_WTI_CUSHING",
+    "GC_FUTURES_ONLY",
+    "NG_HENRY_HUB",
+    "SI_FUTURES_ONLY",
+    "ZC_CORN_DECATUR_PROXY",
+    "ZC_CORN_GULF_PROXY",
+    "ZC_CORN_OK_FALLBACK",
+    "ZS_SOYBEAN_MEAL_RELATED_PROXY",
+    "ZW_SRW_WHEAT"
+  ],
+  "errors": [],
+  "warnings": [
+    "Rows with STALE_PHYSICAL_* flags are calculated but should be reviewed before publication.",
+    "ZS uses soybean meal as a related physical proxy, matching the existing repository sample logic.",
+    "GC and SI are emitted as futures-only rows because no physical basis leg is present in the current public subset."
+  ]
+}

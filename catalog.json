@@ -1,0 +1,104 @@
+{
+  "catalog_version": "2026-06-16-minimal",
+  "project": "Metrixx-AI",
+  "default_gatekeeper_id": "LOCAL_PROTO",
+  "purpose": "Minimal source compliance catalog for the public Metrixx-AI ingestion subset.",
+  "status_definitions": {
+    "GO": "Full ingestion, normalization, validation, and derived analytics are allowed.",
+    "GO_INTERNAL_ANALYTICS": "Internal analytics only; do not redistribute raw licensed reference data.",
+    "REVIEW_PARAPHRASE_ONLY": "Headline/snippet event detection only; no full article fetch, storage, or reproduction.",
+    "HOLD": "Blocked until licensing or explicit AI/data-use rights are approved.",
+    "RED": "Hard blocked for ingestion."
+  },
+  "sources": [
+    {
+      "source_key": "EIA",
+      "status": "GO",
+      "repository_paths": ["Data_light_version/EIA"],
+      "allowed_outputs": ["normalized_json", "normalized_csv", "basis_sentiment_overlay"],
+      "notes": "Public EIA API/RSS sources used for energy physical prices and Today in Energy headlines."
+    },
+    {
+      "source_key": "USDA_AMS",
+      "status": "GO",
+      "repository_paths": ["Data_light_version/USDA"],
+      "allowed_outputs": ["normalized_json", "normalized_csv", "basis_sentiment_overlay"],
+      "notes": "USDA AMS/MARS physical grain prices. Corn Decatur/Gulf mappings are explicitly labeled as proxy/fallback when strict records are unavailable."
+    },
+    {
+      "source_key": "CFTC",
+      "status": "GO",
+      "repository_paths": ["Data_light_version/CFTC", "COT_scoring_positioning"],
+      "allowed_outputs": ["normalized_positioning", "cot_scores", "basis_sentiment_overlay"],
+      "notes": "CFTC public Socrata datasets for disaggregated and legacy futures-only COT reports."
+    },
+    {
+      "source_key": "FRED",
+      "status": "GO",
+      "repository_paths": ["Data_light_version/FRED"],
+      "allowed_outputs": ["macro_overlay"],
+      "notes": "Public FRED macro series outputs are included; fetcher code is not present in this repository snapshot."
+    },
+    {
+      "source_key": "Baker_Hughes",
+      "status": "GO",
+      "repository_paths": ["Data_light_version/Baker Hughes"],
+      "allowed_outputs": ["rig_count_overlay"],
+      "notes": "Local workbook parser for Baker Hughes North America rig count files."
+    },
+    {
+      "source_key": "CME",
+      "status": "GO_INTERNAL_ANALYTICS",
+      "repository_paths": ["Basis_sentiment", "Data_light_version/CME"],
+      "allowed_outputs": ["normalized_futures_sessions", "internal_basis_sentiment_samples", "basis_sentiment_overlay"],
+      "notes": "CME futures session settlements are fetched through Massive Futures REST and normalized for internal basis analytics. API keys must be supplied through MASSIVE_API_KEY and must not be committed."
+    },
+    {
+      "source_key": "Reuters",
+      "status": "REVIEW_PARAPHRASE_ONLY",
+      "repository_paths": ["Data_light_version/Reuters"],
+      "allowed_outputs": ["headline_snippet_event_tags", "paraphrased_summaries"],
+      "notes": "Default code path uses Google News RSS constrained to Reuters pages unless an official Reuters RSS feed is supplied."
+    },
+    {
+      "source_key": "ICIS",
+      "status": "REVIEW_PARAPHRASE_ONLY",
+      "repository_paths": [],
+      "allowed_outputs": ["headline_snippet_event_tags"],
+      "notes": "Mentioned in policy only; no ICIS ingestion code is included."
+    },
+    {
+      "source_key": "Barchart_cmdtyView",
+      "status": "HOLD",
+      "repository_paths": [],
+      "allowed_outputs": [],
+      "notes": "Pending licensing or explicit AI ingestion approval."
+    },
+    {
+      "source_key": "SP_Global_Platts",
+      "status": "HOLD",
+      "repository_paths": [],
+      "allowed_outputs": [],
+      "notes": "Pending licensing or explicit AI ingestion approval."
+    },
+    {
+      "source_key": "Argus_Media",
+      "status": "RED",
+      "repository_paths": [],
+      "allowed_outputs": [],
+      "notes": "Hard blocked for assessed-price ingestion."
+    }
+  ],
+  "required_normalized_fields": [
+    "source_id",
+    "instrument",
+    "timestamp",
+    "data_type",
+    "value",
+    "unit",
+    "tos_status",
+    "gatekeeper_cleared",
+    "gatekeeper_id",
+    "raw_source_url"
+  ]
+}
